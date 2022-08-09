@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
-  width: 42%;
+  width: 611px;
   text-align: left;
   height: 64px;
   margin-top: 121px;

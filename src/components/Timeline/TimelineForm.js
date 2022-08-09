@@ -4,7 +4,7 @@ const FormContainer = styled.div`
   display: flex;
   background-color: #ffffff;
   flex-direction: row;
-  width: 42%;
+  width: 611px;
   height: 209px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;

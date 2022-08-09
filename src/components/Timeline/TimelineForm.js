@@ -9,6 +9,14 @@ const FormContainer = styled.div`
   height: 209px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+
+  @media (max-width: 612px) {
+    min-width: 0;
+    width: 100%;
+    height: 170px;
+    border-radius: 0;
+    padding-bottom: 8px;
+  }
 `;
 
 const FormImage = styled.div`
@@ -23,6 +31,10 @@ const FormImage = styled.div`
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
+  }
+
+  @media (max-width: 612px) {
+    display: none;
   }
 `;
 
@@ -39,6 +51,16 @@ const FormContent = styled.div`
     font-size: 20px;
     color: #707070;
     text-align: left;
+  }
+
+  @media (max-width: 612px) {
+    padding: 10px 15px 0 15px;
+    width: 100%;
+  
+    h1 {
+      font-size: 17px;
+      text-align: center;
+    }  
   }
 `;
 
@@ -90,6 +112,27 @@ const PublishForm = styled.form`
     color: #ffffff;
 
     cursor: pointer;
+  }
+
+  @media (max-width: 612px) {
+    height: 145px;
+    margin-top: 10px;
+    width: 100%;
+  
+    input {
+      font-size: 13px;
+      padding: 5px 0 5px 11px;
+    }
+  
+    & input:nth-child(2) {
+      height: 47px;
+      padding-bottom: 21px;
+    }
+  
+    button {
+      height: 22px;
+      font-size: 13px;
+    }
   }
 `;
 

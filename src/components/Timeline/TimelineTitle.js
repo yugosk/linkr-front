@@ -15,4 +15,20 @@ export default styled.div`
     line-height: 64px;
     color: #ffffff;
   }
+
+  @media (max-width: 612px) {
+    width: 100%;
+    text-align: left;
+    height: 87px;
+    margin-top: 72px;
+    margin-bottom: 0;
+    padding-left: 17px;
+  
+    h1 {
+      font-weight: 700;
+      font-size: 33px;
+      line-height: 87px;
+      color: #ffffff;
+    }
+  }
 `;

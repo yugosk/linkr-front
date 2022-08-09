@@ -11,7 +11,7 @@ import {
   FormImage,
   FormContent,
   PublishForm,
-} from "../components/Timeline/PublishForm/FormContainer";
+} from "../components/Timeline/TimelineForm";
 import { IoIosArrowDown } from "react-icons/io";
 
 export default function TimelinePage() {

@@ -17,27 +17,34 @@ import { IoIosArrowDown } from "react-icons/io";
 export default function TimelinePage() {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [publishLoading, setPublishLoading] = useState(false);
 
-  function submitPost(e) {
+  async function submitPost(e) {
     e.preventDefault();
     const urlRegex =
-      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-    if (url !== "" && urlRegex.test(url)) {
-      const postData = { url, description };
-      //falta trocar o link da requisição e o token usado para testes
-      const promise = axios.post("http://localhost:4000/posts", postData, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMDc2ODU4fQ.hBNC8rWEeajXZnknyQsuIQ_ff5qvdVKHXDxNkxuUL1g`,
-        },
-      });
-      promise.then((response) =>
-        console.log(
-          "Criado com sucesso, falta a parte de atualizar a página com os novos posts"
-        )
-      );
-      promise.catch((err) => console.log(err));
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+    if (url === "" || !urlRegex.test(url)) {
+      alert("Fill in the url input correctly");
     } else {
-      alert("Check the inputs, the url is required!");
+      try {
+        setPublishLoading(true);
+
+        const postData = { url, description };
+        const configs = {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMDc2ODU4fQ.hBNC8rWEeajXZnknyQsuIQ_ff5qvdVKHXDxNkxuUL1g`,
+          },
+        };
+        await axios.post("http://localhost:4000/posts", postData, configs);
+
+        setPublishLoading(false);
+        alert("Criado com sucesso, trocar o comando aqui pelo Get de posts");
+      } catch (err) {
+        if (err.response.status === 401) {
+          alert("Invalid URL");
+        }
+        setPublishLoading(false);
+      }
     }
   }
 
@@ -74,6 +81,7 @@ export default function TimelinePage() {
               value={url}
               placeholder="http://..."
               required
+              disabled={publishLoading}
               onChange={(e) => setUrl(e.target.value)}
             />
             <input
@@ -81,9 +89,12 @@ export default function TimelinePage() {
               id="description"
               value={description}
               placeholder="Awesome article about #javascript"
+              disabled={publishLoading}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <button>Publish</button>
+            <button type="submit" disabled={publishLoading}>
+              Publish
+            </button>
           </PublishForm>
         </FormContent>
       </FormContainer>

@@ -1,8 +1,10 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
+  const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(null);
 
   const createSession = ({ token, picture }) => {
@@ -25,6 +27,7 @@ export function UserContextProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("picture");
     setAuthenticated(false);
+    navigate("/", { replace: true });
   };
 
   const checkSession = () => {

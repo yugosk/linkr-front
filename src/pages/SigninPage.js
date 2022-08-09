@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import UserContext from "../contexts/userContext";
 
 import PageView from "../components/Authentication/PageView";
 import Description from "../components/Authentication/Description";
@@ -11,9 +13,17 @@ import Button from "../components/Authentication/Form/Button";
 export default function SigninPage() {
   const navigate = useNavigate();
 
+  const { authenticated, createSession } = useContext(UserContext);
+
   const [postLoading, setPostLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/timeline", { replace: true });
+    }
+  }, [authenticated]);
 
   async function signIn(e) {
     e.preventDefault();
@@ -21,7 +31,12 @@ export default function SigninPage() {
       setPostLoading(true);
 
       const body = { email, password };
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/signin`, body);
+      const user = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/signin`,
+        body
+      );
+
+      createSession(user.data);
 
       navigate("/timeline", { replace: true });
     } catch (err) {

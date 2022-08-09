@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import UserContext from "../contexts/userContext";
 
 import PageView from "../components/Authentication/PageView";
 import Description from "../components/Authentication/Description";
@@ -11,11 +13,19 @@ import Button from "../components/Authentication/Form/Button";
 export default function SignupPage() {
   const navigate = useNavigate();
 
+  const { authenticated } = useContext(UserContext);
+
   const [postLoading, setPostLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState("");
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/timeline", { replace: true });
+    }
+  }, [authenticated]);
 
   async function signUp(e) {
     e.preventDefault();

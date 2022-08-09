@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Oswald:wght@700&family=Passion+One:wght@700&display=swap");
+
+* {
+  box-sizing: border-box;
+  transition: all ease 0.2s;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body {
+  background-color: #333333;
+}

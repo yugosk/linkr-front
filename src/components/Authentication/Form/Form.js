@@ -24,4 +24,10 @@ export default styled.form`
     line-height: 24px;
     color: #ffffff;
   }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    margin: 40px 0;
+    width: 100%;
+  }
 `;

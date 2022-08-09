@@ -6,7 +6,7 @@ export default styled.div`
   height: 100vh;
   width: 100%;
 
-  @media (max-width: 992px) {
+  @media (max-width: 768px) {
     flex-direction: column;
   }
 `;

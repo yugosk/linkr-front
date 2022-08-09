@@ -26,4 +26,29 @@ export default styled.div`
     font-weight: 700;
     font-size: 43px;
   }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    padding: 20px 20px 30px;
+    height: auto;
+    width: 100%;
+
+    div {
+      margin: 0;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 76px;
+    }
+
+    h2 {
+      max-width: 240px;
+      font-size: 23px;
+    }
+  }
 `;

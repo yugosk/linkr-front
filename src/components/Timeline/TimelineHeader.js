@@ -30,7 +30,8 @@ const TimelineHeader = styled.div`
   }
 
   @media (max-width: 612px) {
-    padding: 0 52px 0 17px;
+    padding: 0 14px 0 17px;
+    min-width: 100vw;
 
     h1 {
       font-size: 45px;
@@ -50,8 +51,7 @@ const HeaderProfilePic = styled.img`
     width: 44px;
     heigth: 44px;
     margin-left: 6px;
-    }
-
+  }
 `;
 
 export { TimelineHeader, HeaderProfilePic };

@@ -4,14 +4,12 @@ const FormContainer = styled.div`
   display: flex;
   background-color: #ffffff;
   flex-direction: row;
-  min-width: 611px;
   width: 42%;
   height: 209px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
   @media (max-width: 612px) {
-    min-width: 0;
     width: 100%;
     height: 170px;
     border-radius: 0;
@@ -55,12 +53,12 @@ const FormContent = styled.div`
 
   @media (max-width: 612px) {
     padding: 10px 15px 0 15px;
-    width: 100%;
-  
+    width: 97%;
+
     h1 {
       font-size: 17px;
       text-align: center;
-    }  
+    }
   }
 `;
 
@@ -118,17 +116,17 @@ const PublishForm = styled.form`
     height: 145px;
     margin-top: 10px;
     width: 100%;
-  
+
     input {
       font-size: 13px;
       padding: 5px 0 5px 11px;
     }
-  
+
     & input:nth-child(2) {
       height: 47px;
       padding-bottom: 21px;
     }
-  
+
     button {
       height: 22px;
       font-size: 13px;

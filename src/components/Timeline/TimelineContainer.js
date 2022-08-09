@@ -7,4 +7,5 @@ export default styled.div`
   background-color: #333333;
   align-items: center;
   flex-direction: column;
+  padding: 0;
 `;

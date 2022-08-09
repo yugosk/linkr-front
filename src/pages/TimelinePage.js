@@ -18,6 +18,7 @@ export default function TimelinePage() {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishLoading, setPublishLoading] = useState(false);
+  const [publishButton, setPublishButton] = useState("Publish");
 
   async function submitPost(e) {
     e.preventDefault();
@@ -28,6 +29,7 @@ export default function TimelinePage() {
     } else {
       try {
         setPublishLoading(true);
+        setPublishButton("Publishing...");
 
         const postData = { url, description };
         const configs = {
@@ -38,12 +40,13 @@ export default function TimelinePage() {
         await axios.post("http://localhost:4000/posts", postData, configs);
 
         setPublishLoading(false);
+        setPublishButton("Publish");
         alert("Criado com sucesso, trocar o comando aqui pelo Get de posts");
       } catch (err) {
-        if (err.response.status === 401) {
-          alert("Invalid URL");
-        }
+        alert("Houve um erro ao publicar o seu link");
+
         setPublishLoading(false);
+        setPublishButton("Publish");
       }
     }
   }
@@ -93,7 +96,7 @@ export default function TimelinePage() {
               onChange={(e) => setDescription(e.target.value)}
             />
             <button type="submit" disabled={publishLoading}>
-              Publish
+              {publishButton}
             </button>
           </PublishForm>
         </FormContent>

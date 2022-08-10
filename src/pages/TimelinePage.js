@@ -4,18 +4,12 @@ import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
 import UserContext from "../contexts/userContext";
 import {
-  HeaderOptions,
-  HeaderProfilePic,
-  TimelineHeader,
-} from "../components/Timeline/TimelineHeader";
-import {
   FormContainer,
   FormImage,
   FormContent,
   PublishForm,
 } from "../components/Timeline/TimelineForm";
 import PostList from "../components/Timeline/TimelinePosts";
-import { IoIosArrowDown } from "react-icons/io";
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
@@ -82,15 +76,6 @@ export default function TimelinePage() {
 
   return (
     <TimelineContainer>
-      <TimelineHeader>
-        <div>
-          <h1>linkr</h1>
-        </div>
-        <div>
-          <IoIosArrowDown color="#ffffff" size={"24px"} />
-          <HeaderProfilePic src={picture} alt="Profile" />
-        </div>
-      </TimelineHeader>
       <TimelineTitle>
         <h1>timeline</h1>
       </TimelineTitle>

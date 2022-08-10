@@ -31,10 +31,7 @@ export default function SigninPage() {
       setPostLoading(true);
 
       const body = { email, password };
-      const user = await axios.post(
-        `https://projeto17-linkr-back-end1.herokuapp.com/signin`,
-        body
-      );
+      const user = await axios.post(`REACT_APP_API_BASE_URL/signin`, body);
 
       createSession(user.data);
 

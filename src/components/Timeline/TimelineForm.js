@@ -16,6 +16,7 @@ const FormContainer = styled.div`
     height: 170px;
     border-radius: 0;
     padding-bottom: 8px;
+    margin-bottom: 16px;
   }
 `;
 

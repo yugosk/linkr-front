@@ -19,6 +19,7 @@ const Post = styled.div`
     height: 232px;
     border-radius: 0;
     padding: 10px 0 8px 0;
+    margion-bottom: 16px;
   }
 `;
 

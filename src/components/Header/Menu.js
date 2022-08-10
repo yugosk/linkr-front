@@ -1,23 +1,27 @@
 import { useContext } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import styled from "styled-components";
 
 import UserContext from "../../contexts/userContext";
+import useComponentVisible from "../../hooks/useComponentVisible";
 
 export default function Menu() {
   const { getSession } = useContext(UserContext);
+  const { ref, isComponentVisible } = useComponentVisible(false);
 
   const { picture } = getSession();
 
   return (
-    <Container>
+    <Container ref={ref}>
       <Profile>
-        <IoIosArrowDown />
+        {isComponentVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         <img src={picture} alt="Profile" />
       </Profile>
-      {/* <Options>
-        <p>Logout</p>
-      </Options> */}
+      {isComponentVisible && (
+        <Options>
+          <p>Logout</p>
+        </Options>
+      )}
     </Container>
   );
 }

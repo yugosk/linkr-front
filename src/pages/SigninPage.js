@@ -32,7 +32,7 @@ export default function SigninPage() {
 
       const body = { email, password };
       const user = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/signin`,
+        `https://projeto17-linkr-back-end1.herokuapp.com/signin`,
         body
       );
 

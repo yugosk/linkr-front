@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
+import UserContext from "../contexts/userContext";
 import {
+  HeaderOptions,
   HeaderProfilePic,
   TimelineHeader,
 } from "../components/Timeline/TimelineHeader";
@@ -12,13 +14,34 @@ import {
   FormContent,
   PublishForm,
 } from "../components/Timeline/TimelineForm";
+import PostList from "../components/Timeline/TimelinePosts";
 import { IoIosArrowDown } from "react-icons/io";
 
 export default function TimelinePage() {
+  const { getSession } = useContext(UserContext);
+  const { token, picture } = getSession();
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishLoading, setPublishLoading] = useState(false);
   const [publishButton, setPublishButton] = useState("Publish");
+  const [loading, setLoading] = useState(true);
+  const [postList, setPostList] = useState([]);
+
+  async function getPosts() {
+    const configs = {
+      headers: { Authorization: token },
+    };
+    try {
+      const promise = await axios.get("http://localhost:4000/posts", configs);
+      console.log(promise);
+      await setPostList(promise.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => getPosts, []);
 
   async function submitPost(e) {
     e.preventDefault();
@@ -33,9 +56,7 @@ export default function TimelinePage() {
 
         const postData = { url, description };
         const configs = {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMDc2ODU4fQ.hBNC8rWEeajXZnknyQsuIQ_ff5qvdVKHXDxNkxuUL1g`,
-          },
+          headers: { Authorization: token },
         };
         await axios.post("http://localhost:4000/posts", postData, configs);
 
@@ -59,10 +80,7 @@ export default function TimelinePage() {
         </div>
         <div>
           <IoIosArrowDown color="#ffffff" size={"24px"} />
-          <HeaderProfilePic
-            src="https://magazine25.vteximg.com.br/arquivos/ids/231937-1250-1250/dislpay-pokemon-2.jpg?v=637804477486100000"
-            alt="Profile"
-          />
+          <HeaderProfilePic src={picture} alt="Profile" />
         </div>
       </TimelineHeader>
       <TimelineTitle>
@@ -70,10 +88,7 @@ export default function TimelinePage() {
       </TimelineTitle>
       <FormContainer>
         <FormImage>
-          <img
-            src="https://magazine25.vteximg.com.br/arquivos/ids/231937-1250-1250/dislpay-pokemon-2.jpg?v=637804477486100000"
-            alt="Profile"
-          />
+          <img src={picture} alt="Profile" />
         </FormImage>
         <FormContent>
           <h1>What are you going to share today?</h1>
@@ -101,6 +116,7 @@ export default function TimelinePage() {
           </PublishForm>
         </FormContent>
       </FormContainer>
+      <PostList loading={loading} posts={postList} />
     </TimelineContainer>
   );
 }

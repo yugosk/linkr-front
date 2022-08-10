@@ -33,7 +33,7 @@ export default function TimelinePage() {
     };
     try {
       const promise = await axios.get(
-        `${REACT_APP_API_BASE_URL}/posts`,
+        `${process.env.REACT_APP_API_BASE_URL}/posts`,
         configs
       );
       console.log(promise);
@@ -61,7 +61,11 @@ export default function TimelinePage() {
         const configs = {
           headers: { Authorization: token },
         };
-        await axios.post(`${REACT_APP_API_BASE_URL}/posts`, postData, configs);
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/posts`,
+          postData,
+          configs
+        );
 
         setPublishLoading(false);
         setPublishButton("Publish");

@@ -12,13 +12,13 @@ const Post = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 30px;
-  padding: 19px 0 20px 0;
+  padding: 20px 0 20px 0;
 
   @media (max-width: 612px) {
     width: 100%;
-    height: 170px;
+    height: 232px;
     border-radius: 0;
-    padding-bottom: 8px;
+    padding: 10px 0 8px 0;
   }
 `;
 
@@ -37,7 +37,6 @@ const PostLeft = styled.div`
   }
 
   @media (max-width: 612px) {
-    display: none;
   }
 `;
 
@@ -46,6 +45,7 @@ const PostContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 
   h1 {
     font-family: "Lato";
@@ -73,7 +73,10 @@ const PostContent = styled.div`
 
     h1 {
       font-size: 17px;
-      text-align: center;
+    }
+
+    p {
+      font-size: 15px;
     }
   }
 `;
@@ -85,6 +88,13 @@ const PostSnippet = styled.div`
   height: 155px;
   border: 1px solid #4d4d4d;
   border-radius: 12px;
+
+  @media (max-width: 612px) {
+    width: 97%;
+    height: 155px;
+    border: 1px solid #4d4d4d;
+    border-radius: 12px;
+  }
 `;
 
 const SnippetText = styled.div`
@@ -96,6 +106,7 @@ const SnippetText = styled.div`
   width: 70%;
   height: 100%;
   padding: 24px 0 23px 20px;
+  box-sizing: border-box;
 
   h1 {
     font-family: "Lato";
@@ -119,6 +130,25 @@ const SnippetText = styled.div`
     font-size: 11px;
     color: #cecece;
     text-decoration: none;
+    word-break: break-all;
+  }
+
+  @media (max-width: 612px) {
+    padding: 7px 7px 8px 11px;
+
+    h1 {
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 9px;
+      margin-bottom: 4px;
+    }
+
+    a {
+      font-size: 9px;
+    }
   }
 `;
 

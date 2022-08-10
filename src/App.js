@@ -10,7 +10,6 @@ import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TimelinePage from "./pages/TimelinePage";
 
-
 export default function App() {
   return (
     <BrowserRouter>

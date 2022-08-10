@@ -63,7 +63,7 @@ export default function TimelinePage() {
         setPublishLoading(false);
         setPublishButton("Publish");
         alert("Criado com sucesso");
-        getPosts;
+        getPosts();
       } catch (err) {
         alert("Houve um erro ao publicar o seu link");
 

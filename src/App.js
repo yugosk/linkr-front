@@ -6,15 +6,16 @@ import "./assets/styles/style.css";
 
 import { UserContextProvider } from "./contexts/userContext";
 
+import Header from "./components/Header/Header";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TimelinePage from "./pages/TimelinePage";
-
 
 export default function App() {
   return (
     <BrowserRouter>
       <UserContextProvider>
+        <Header />
         <Routes>
           <Route path="/" element={<SigninPage />} />
           <Route path="/sign-up" element={<SignupPage />} />

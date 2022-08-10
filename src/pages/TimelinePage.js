@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
-import {
-  HeaderProfilePic,
-  TimelineHeader,
-} from "../components/Timeline/TimelineHeader";
+
 import {
   FormContainer,
   FormImage,
   FormContent,
   PublishForm,
 } from "../components/Timeline/TimelineForm";
-import { IoIosArrowDown } from "react-icons/io";
 
 export default function TimelinePage() {
   const [url, setUrl] = useState("");
@@ -53,18 +49,6 @@ export default function TimelinePage() {
 
   return (
     <TimelineContainer>
-      <TimelineHeader>
-        <div>
-          <h1>linkr</h1>
-        </div>
-        <div>
-          <IoIosArrowDown color="#ffffff" size={"24px"} />
-          <HeaderProfilePic
-            src="https://magazine25.vteximg.com.br/arquivos/ids/231937-1250-1250/dislpay-pokemon-2.jpg?v=637804477486100000"
-            alt="Profile"
-          />
-        </div>
-      </TimelineHeader>
       <TimelineTitle>
         <h1>timeline</h1>
       </TimelineTitle>

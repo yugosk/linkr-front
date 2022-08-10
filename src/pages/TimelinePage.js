@@ -1,20 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
-
+import UserContext from "../contexts/userContext";
 import {
   FormContainer,
   FormImage,
   FormContent,
   PublishForm,
 } from "../components/Timeline/TimelineForm";
+import PostList from "../components/Timeline/TimelinePosts";
 
 export default function TimelinePage() {
+  const { getSession } = useContext(UserContext);
+  const { token, picture } = getSession();
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishLoading, setPublishLoading] = useState(false);
   const [publishButton, setPublishButton] = useState("Publish");
+  const [loading, setLoading] = useState(true);
+  const [postList, setPostList] = useState([]);
+
+  async function getPosts() {
+    const configs = {
+      headers: { Authorization: token },
+    };
+    try {
+      const promise = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/posts`,
+        configs
+      );
+      console.log(promise);
+      await setPostList(promise.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => getPosts, []);
 
   async function submitPost(e) {
     e.preventDefault();
@@ -29,15 +53,18 @@ export default function TimelinePage() {
 
         const postData = { url, description };
         const configs = {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMDc2ODU4fQ.hBNC8rWEeajXZnknyQsuIQ_ff5qvdVKHXDxNkxuUL1g`,
-          },
+          headers: { Authorization: token },
         };
-        await axios.post("http://localhost:4000/posts", postData, configs);
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/posts`,
+          postData,
+          configs
+        );
 
         setPublishLoading(false);
         setPublishButton("Publish");
-        alert("Criado com sucesso, trocar o comando aqui pelo Get de posts");
+        alert("Criado com sucesso");
+        getPosts();
       } catch (err) {
         alert("Houve um erro ao publicar o seu link");
 
@@ -54,10 +81,7 @@ export default function TimelinePage() {
       </TimelineTitle>
       <FormContainer>
         <FormImage>
-          <img
-            src="https://magazine25.vteximg.com.br/arquivos/ids/231937-1250-1250/dislpay-pokemon-2.jpg?v=637804477486100000"
-            alt="Profile"
-          />
+          <img src={picture} alt="Profile" />
         </FormImage>
         <FormContent>
           <h1>What are you going to share today?</h1>
@@ -85,6 +109,7 @@ export default function TimelinePage() {
           </PublishForm>
         </FormContent>
       </FormContainer>
+      <PostList loading={loading} posts={postList} />
     </TimelineContainer>
   );
 }

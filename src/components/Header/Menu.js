@@ -6,10 +6,16 @@ import UserContext from "../../contexts/userContext";
 import useComponentVisible from "../../hooks/useComponentVisible";
 
 export default function Menu() {
-  const { getSession } = useContext(UserContext);
+  const { getSession, finishSession } = useContext(UserContext);
   const { ref, isComponentVisible } = useComponentVisible(false);
 
   const { picture } = getSession();
+
+  function logout() {
+    if (window.confirm("Do you really wish to log out of the app?")) {
+      finishSession();
+    }
+  }
 
   return (
     <Container ref={ref}>
@@ -19,7 +25,7 @@ export default function Menu() {
       </Profile>
       {isComponentVisible && (
         <Options>
-          <p>Logout</p>
+          <p onClick={logout}>Logout</p>
         </Options>
       )}
     </Container>

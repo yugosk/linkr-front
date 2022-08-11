@@ -2,6 +2,8 @@ import styled from "styled-components";
 import React from "react";
 import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 const Post = styled.div`
   display: flex;
@@ -186,6 +188,14 @@ function SinglePost({
   metaImage,
   metaDescription,
 }) {
+  const tagStyle = {
+    color: "#ffffff",
+    fontWeight: 700,
+    cursor: "pointer",
+  };
+
+  const navigate = useNavigate();
+
   if (metaImage === "Metadata not available" || metaImage === "") {
     return (
       <Post>
@@ -194,7 +204,12 @@ function SinglePost({
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
-          <p>{description}</p>
+          <ReactTagify
+            tagStyle={tagStyle}
+            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+          >
+            <p>{description}</p>
+          </ReactTagify>
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>
@@ -218,7 +233,12 @@ function SinglePost({
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
-          <p>{description}</p>
+          <ReactTagify
+            tagStyle={tagStyle}
+            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+          >
+            <p>{description}</p>
+          </ReactTagify>
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>

@@ -14,7 +14,7 @@ export default function TrendingBox(){
     async function getTags() {
         try {
           const promise = await axios.get(
-            `${process.env.REACT_APP_API_BASE_URL}trendingtags`
+            `${process.env.REACT_APP_API_BASE_URL}/trendingtags`
           );
           setTagsList(promise.data);
         } catch (err) {

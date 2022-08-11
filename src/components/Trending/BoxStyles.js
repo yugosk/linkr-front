@@ -1,14 +1,16 @@
 import styled from "styled-components";
 
 export default styled.div`
-margin:10px;
+margin:228px 20px 0px 25px;
 width: 301px;
 height: 406px;
 background: #171717;
 border-radius: 16px;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 display:flex;
 flex-direction:column;
 padding: 9px 0px;
+top:228px;
 
 .trending{
     font-family: 'Oswald';
@@ -41,5 +43,9 @@ a:hover{
 
 a:nth-child(1){
     margin-top:20px;
-} 
+}
+
+@media (max-width: 612px) {
+    display:none;
+}
 `

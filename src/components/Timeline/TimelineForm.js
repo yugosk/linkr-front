@@ -8,12 +8,15 @@ const FormContainer = styled.div`
   height: 209px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+  margin-bottom: 30px;
+  padding-bottom: 16px;
 
   @media (max-width: 612px) {
     width: 100%;
     height: 170px;
     border-radius: 0;
     padding-bottom: 8px;
+    margin-bottom: 16px;
   }
 `;
 

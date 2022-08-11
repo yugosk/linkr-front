@@ -20,7 +20,7 @@ export default styled.div`
     width: 100%;
     text-align: left;
     height: 87px;
-    margin-top: 72px;
+    margin-top: 140px;
     margin-bottom: 0;
     padding-left: 17px;
 

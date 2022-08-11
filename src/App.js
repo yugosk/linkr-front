@@ -7,6 +7,7 @@ import "./assets/styles/style.css";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TimelinePage from "./pages/TimelinePage";
+import TrendingBox from "./components/Trending/TrendingBox";
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/" element={<SigninPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/timeline" element={<TimelinePage />} />
+        <Route path="/trending" element={<TrendingBox/>} />
       </Routes>
     </BrowserRouter>
   );

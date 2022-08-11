@@ -14,14 +14,14 @@ import TimelinePage from "./pages/TimelinePage";
 export default function App() {
   return (
     <BrowserRouter>
-    <UserContextProvider>
-      <Header />
-      <Routes>
-        <Route path="/" element={<SigninPage />} />
-        <Route path="/sign-up" element={<SignupPage />} />
-        <Route path="/timeline" element={<TimelinePage />} />
-      </Routes>
-    </UserContextProvider>
-  </BrowserRouter>
+      <UserContextProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<SigninPage />} />
+          <Route path="/sign-up" element={<SignupPage />} />
+          <Route path="/timeline" element={<TimelinePage />} />
+        </Routes>
+      </UserContextProvider>
+    </BrowserRouter>
   );
 }

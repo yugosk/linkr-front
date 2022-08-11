@@ -1,13 +1,63 @@
+import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import { DebounceInput } from "react-debounce-input";
 import { AiOutlineSearch } from "react-icons/ai";
+import SearchResult from "./SearchResult";
 
 export default function SearchBar() {
+  const [name, setName] = useState("");
+  const [focused, setFocused] = useState(false);
+  const [usersList, setUsersList] = useState([]);
+  const [getLoading, setGetLoading] = useState(false);
+
+  async function searchPeople(e) {
+    const typedName = e.target.value;
+    setName(typedName);
+    setUsersList([]);
+    setGetLoading(true);
+
+    try {
+      if (typedName.length !== 0) {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/users?name=${typedName}`
+        );
+
+        setUsersList(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setGetLoading(false);
+    }
+  }
+
+  function resetSearch() {
+    setUsersList([]);
+    setName("");
+  }
+
   return (
     <Container>
-      <Input type="text" placeholder="Search for people" />
+      <Input
+        type="text"
+        value={name}
+        onChange={searchPeople}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        placeholder="Search for people"
+        minLength={3}
+        debounceTimeout={300}
+      />
       <AiOutlineSearch />
+      {focused && (
+        <SearchResult
+          usersList={usersList}
+          getLoading={getLoading}
+          resetSearch={resetSearch}
+        />
+      )}
     </Container>
   );
 }
@@ -19,7 +69,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 560px;
 
-  svg {
+  > svg {
     position: absolute;
     top: 8px;
     right: 10px;
@@ -37,6 +87,7 @@ const Container = styled.div`
 `;
 
 const Input = styled(DebounceInput)`
+  position: absolute;
   padding: 0 44px 0 18px;
   border: none;
   border-radius: 8px;

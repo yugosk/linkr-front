@@ -26,7 +26,7 @@ export default function TrendingBox(){
     function displayTag(tag){
         const link = '/hashatag/' + tag.trendingTags;
         return(
-            <Link key={tag.tagId} to={link} >{tag.trendingTags}</Link>
+            <Link key={tag.tagId} to={link} ># {tag.trendingTags}</Link>
         )
     }
 

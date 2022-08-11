@@ -30,15 +30,14 @@ export default function TimelinePage() {
         `${process.env.REACT_APP_API_BASE_URL}/posts`,
         configs
       );
-      console.log(promise);
-      await setPostList(promise.data);
+      setPostList(promise.data);
       setLoading(false);
     } catch (err) {
       console.log(err);
     }
   }
 
-  useEffect(() => getPosts, []);
+  useEffect(() => getPosts(), []);
 
   async function submitPost(e) {
     e.preventDefault();

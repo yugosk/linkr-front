@@ -5,6 +5,7 @@ import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
 const Post = styled.div`
@@ -222,10 +223,40 @@ const StyledLikes = styled.div`
   }
 `;
 
+function defineTooltip(likes, isLiked, count, userId) {
+  const newLikes = likes.filter((i) => i.userId !== userId);
+  if (likes.length === 0) {
+    return "Nobody liked this post yet :(";
+  } else if (likes.length === 1) {
+    if (isLiked) {
+      return "You";
+    } else {
+      return `${likes[0].username}`;
+    }
+  } else if (likes.length === 2) {
+    if (isLiked) {
+      return `You and ${newLikes[0].username}`;
+    } else {
+      return `${likes[0].username} and ${likes[1].username}`;
+    }
+  } else {
+    if (isLiked) {
+      return `You, ${newLikes[0].username} and other ${count - 2} people`;
+    } else {
+      return `${likes[0].username}, ${likes[1].username} and other ${
+        count - 2
+      } people`;
+    }
+  }
+}
+
 function PostLikes({ isLiked, likes, postId, userId, token }) {
   const [liked, setLiked] = useState(isLiked);
   const [disabled, setDisabled] = useState(false);
   const [count, setCount] = useState(likes.length);
+  const [tooltip, setTooltip] = useState(
+    defineTooltip(likes, isLiked, count, userId)
+  );
 
   async function postLike(postId) {
     const configs = {
@@ -240,6 +271,7 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
         );
         setLiked(false);
         setCount(count - 1);
+        setTooltip(defineTooltip(likes, isLiked, count, userId));
       } catch {
         alert("There was an error unliking the post, try again later");
       } finally {
@@ -254,6 +286,7 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
         );
         setLiked(true);
         setCount(count + 1);
+        setTooltip(defineTooltip(likes, isLiked, count, userId));
       } catch {
         alert("There was an error liking the post, try again later");
       } finally {
@@ -266,14 +299,16 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
     return (
       <StyledLikes liked={true}>
         <AiFillHeart onClick={!disabled ? () => postLike(postId) : null} />
-        <p>{count} likes</p>
+        <p data-tip={tooltip}>{count} likes</p>
+        <ReactTooltip place="bottom" type="light" />
       </StyledLikes>
     );
   } else {
     return (
       <StyledLikes liked={false}>
         <AiOutlineHeart onClick={!disabled ? () => postLike(postId) : null} />
-        <p>{count} likes</p>
+        <p data-tip={tooltip}>{count} likes</p>
+        <ReactTooltip place="bottom" type="light" />
       </StyledLikes>
     );
   }

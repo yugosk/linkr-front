@@ -26,7 +26,10 @@ export default function TimelinePage() {
       headers: { Authorization: token },
     };
     try {
-      const promise = await axios.get(`http://localhost:4000/posts`, configs);
+      const promise = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/posts`,
+        configs
+      );
       setPostList(promise.data);
       setLoading(false);
     } catch (err) {
@@ -51,7 +54,11 @@ export default function TimelinePage() {
         const configs = {
           headers: { Authorization: token },
         };
-        await axios.post(`http://localhost:4000/posts`, postData, configs);
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/posts`,
+          postData,
+          configs
+        );
 
         setPublishLoading(false);
         setPublishButton("Publish");

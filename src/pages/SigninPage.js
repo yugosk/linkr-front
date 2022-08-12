@@ -31,7 +31,10 @@ export default function SigninPage() {
       setPostLoading(true);
 
       const body = { email, password };
-      const user = await axios.post(`http://localhost:4000/signin`, body);
+      const user = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/signin`,
+        body
+      );
 
       createSession(user.data);
 

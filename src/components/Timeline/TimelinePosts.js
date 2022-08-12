@@ -2,17 +2,20 @@ import styled from "styled-components";
 import React from "react";
 import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 const Post = styled.div`
   display: flex;
   background-color: #171717;
   flex-direction: row;
   width: 611px;
-  height: 276px;
+  min-height: 276px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 30px;
   padding: 20px 0 20px 0;
+  box-sizing: content-box;
 
   @media (max-width: 612px) {
     width: 100%;
@@ -86,7 +89,7 @@ const PostSnippet = styled.div`
   display: flex;
   flex-direction: row;
   width: 503px;
-  height: 155px;
+  min-height: 155px;
   border: 1px solid #4d4d4d;
   border-radius: 12px;
 
@@ -163,8 +166,8 @@ const SnippetImage = styled.div`
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     border-radius: 0 12px 12px 0;
+    object-fit: cover;
   }
 `;
 
@@ -185,7 +188,15 @@ function SinglePost({
   metaImage,
   metaDescription,
 }) {
-  if (metaImage === "Metadata not available") {
+  const tagStyle = {
+    color: "#ffffff",
+    fontWeight: 700,
+    cursor: "pointer",
+  };
+
+  const navigate = useNavigate();
+
+  if (metaImage === "Metadata not available" || metaImage === "") {
     return (
       <Post>
         <PostLeft>
@@ -193,7 +204,12 @@ function SinglePost({
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
-          <p>{description}</p>
+          <ReactTagify
+            tagStyle={tagStyle}
+            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+          >
+            <p>{description}</p>
+          </ReactTagify>
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>
@@ -217,7 +233,12 @@ function SinglePost({
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
-          <p>{description}</p>
+          <ReactTagify
+            tagStyle={tagStyle}
+            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+          >
+            <p>{description}</p>
+          </ReactTagify>
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>

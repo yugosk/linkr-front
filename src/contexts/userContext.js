@@ -7,9 +7,10 @@ export function UserContextProvider({ children }) {
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(null);
 
-  const createSession = ({ token, picture }) => {
+  const createSession = ({ token, picture, userId }) => {
     localStorage.setItem("token", token);
     localStorage.setItem("picture", picture);
+    localStorage.setItem("userId", userId);
 
     setAuthenticated(true);
   };
@@ -19,21 +20,23 @@ export function UserContextProvider({ children }) {
       ? `Bearer ${localStorage.getItem("token")}`
       : null;
     const picture = localStorage.getItem("picture");
+    const userId = localStorage.getItem("userId");
 
-    return { token, picture };
+    return { token, picture, userId };
   };
 
   const finishSession = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("picture");
+    localStorage.removeItem("userId");
     setAuthenticated(false);
     navigate("/", { replace: true });
   };
 
   const checkSession = () => {
-    const { token, picture } = getSession();
+    const { token, picture, userId } = getSession();
 
-    if (token && picture) {
+    if (token && picture && userId) {
       setAuthenticated(true);
     } else {
       finishSession();

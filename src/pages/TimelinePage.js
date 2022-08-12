@@ -15,7 +15,7 @@ import TrendingBox from "../components/Trending/TrendingBox"
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
-  const { token, picture } = getSession();
+  const { token, picture, userId } = getSession();
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishLoading, setPublishLoading] = useState(false);
@@ -65,6 +65,8 @@ export default function TimelinePage() {
         setPublishLoading(false);
         setPublishButton("Publish");
         alert("Criado com sucesso");
+        setDescription("");
+        setUrl("");
         getPosts();
       } catch (err) {
         alert("Houve um erro ao publicar o seu link");

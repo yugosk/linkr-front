@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import axios from "axios";
 
 const Post = styled.div`
   display: flex;
@@ -14,14 +16,14 @@ const Post = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 30px;
-  padding: 20px 0 20px 0;
   box-sizing: content-box;
+  padding-bottom: 20px;
 
   @media (max-width: 612px) {
     width: 100%;
     height: 232px;
     border-radius: 0;
-    padding: 10px 0 8px 0;
+    padding: 0 0 8px 0;
     margion-bottom: 16px;
   }
 `;
@@ -30,14 +32,16 @@ const PostLeft = styled.div`
   width: 14%;
   height: 100%;
   display: flex;
-  justify-content: center;
-  padding-top: 16px;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 17px;
 
   img {
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
+    display: block;
   }
 
   @media (max-width: 612px) {
@@ -50,7 +54,7 @@ const PostContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
+  margin-top: 17px;
   h1 {
     font-family: "Lato";
     font-weight: 400;
@@ -69,6 +73,8 @@ const PostContent = styled.div`
     text-align: left;
     line-height: 20px;
     margin-bottom: 12px;
+    padding-right: 22px;
+    min-height: 52px;
   }
 
   @media (max-width: 612px) {
@@ -92,6 +98,7 @@ const PostSnippet = styled.div`
   min-height: 155px;
   border: 1px solid #4d4d4d;
   border-radius: 12px;
+  margin-bottom: 20px;
 
   @media (max-width: 612px) {
     width: 97%;
@@ -179,7 +186,101 @@ const NoPosts = styled.p`
   color: #ffffff;
 `;
 
+const StyledLikes = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 35px;
+
+  svg {
+    color: ${(props) => (props.liked ? "#ac0000" : "#ffffff")};
+    height: 18px;
+    width: 20px;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 11px;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  @media (max-width: 612px) {
+    svg {
+      height: 15px;
+      width: 17px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 9px;
+    }
+  }
+`;
+
+function PostLikes({ isLiked, likes, postId, userId, token }) {
+  const [liked, setLiked] = useState(isLiked);
+  const [disabled, setDisabled] = useState(false);
+  const [count, setCount] = useState(likes.length);
+
+  async function postLike(postId) {
+    const configs = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    setDisabled(true);
+    if (liked) {
+      try {
+        await axios.delete(
+          `http://localhost:4000/likes/${postId}?userId=${userId}`,
+          configs
+        );
+        setLiked(false);
+        setCount(count - 1);
+      } catch {
+        alert("There was an error unliking the post, try again later");
+      } finally {
+        setDisabled(false);
+      }
+    } else {
+      try {
+        await axios.post(
+          `http://localhost:4000/likes/${postId}`,
+          { userId },
+          configs
+        );
+        setLiked(true);
+        setCount(count + 1);
+      } catch {
+        alert("There was an error liking the post, try again later");
+      } finally {
+        setDisabled(false);
+      }
+    }
+  }
+
+  if (liked) {
+    return (
+      <StyledLikes liked={true}>
+        <AiFillHeart onClick={!disabled ? () => postLike(postId) : null} />
+        <p>{count} likes</p>
+      </StyledLikes>
+    );
+  } else {
+    return (
+      <StyledLikes liked={false}>
+        <AiOutlineHeart onClick={!disabled ? () => postLike(postId) : null} />
+        <p>{count} likes</p>
+      </StyledLikes>
+    );
+  }
+}
+
 function SinglePost({
+  postId,
   picture,
   username,
   description,
@@ -187,6 +288,10 @@ function SinglePost({
   metaTitle,
   metaImage,
   metaDescription,
+  likes,
+  userId,
+  token,
+  isLiked,
 }) {
   const tagStyle = {
     color: "#ffffff",
@@ -201,6 +306,14 @@ function SinglePost({
       <Post>
         <PostLeft>
           <img src={picture} />
+          <br />
+          <PostLikes
+            likes={likes}
+            isLiked={isLiked}
+            postId={postId}
+            userId={userId}
+            token={token}
+          />
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
@@ -213,7 +326,7 @@ function SinglePost({
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>
-              <p>{metaDescription}</p>
+              <p>{metaDescription.slice(0, 159)}</p>
               <a href={url} target="_blank" rel="noreferrer">
                 {url}
               </a>
@@ -230,6 +343,14 @@ function SinglePost({
       <Post>
         <PostLeft>
           <img src={picture} />
+          <br />
+          <PostLikes
+            likes={likes}
+            isLiked={isLiked}
+            postId={postId}
+            userId={userId}
+            token={token}
+          />
         </PostLeft>
         <PostContent>
           <h1>{username}</h1>
@@ -242,7 +363,7 @@ function SinglePost({
           <PostSnippet>
             <SnippetText>
               <h1>{metaTitle}</h1>
-              <p>{metaDescription}</p>
+              <p>{metaDescription.slice(0, 159)}</p>
               <a href={url} target="_blank" rel="noreferrer">
                 {url}
               </a>
@@ -257,7 +378,7 @@ function SinglePost({
   }
 }
 
-function MapPosts({ posts }) {
+function MapPosts({ posts, userId, token, isLiked }) {
   if (posts.length === 0) {
     return <NoPosts>There are no posts yet</NoPosts>;
   } else {
@@ -272,18 +393,23 @@ function MapPosts({ posts }) {
           metaTitle={post.metaTitle}
           metaImage={post.metaImage}
           metaDescription={post.metaDescription}
+          likes={post.likes}
+          userId={userId}
+          token={token}
+          postId={post.id}
+          isLiked={post.isLiked}
         />
       );
     });
   }
 }
 
-export default function PostList({ loading, posts }) {
+export default function PostList({ loading, posts, userId, token }) {
   if (loading) {
     return (
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />
     );
   } else {
-    return <MapPosts posts={posts} />;
+    return <MapPosts posts={posts} userId={userId} token={token} />;
   }
 }

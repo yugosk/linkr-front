@@ -266,7 +266,7 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
     if (liked) {
       try {
         await axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/${postId}?userId=${userId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}?userId=${userId}`,
           configs
         );
         setLiked(false);
@@ -280,7 +280,7 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
     } else {
       try {
         await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/${postId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}`,
           { userId },
           configs
         );

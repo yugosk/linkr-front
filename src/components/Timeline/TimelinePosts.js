@@ -383,17 +383,20 @@ function SinglePost({
 
   async function deleting(postId){
     const configs = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `${token}` },
     };
-    alert(`deletar post ${postId}!`);
-    try{
-      await axios.delete(
-      `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
-      configs
-      );
-    } catch(error) {
-      console.log(error);
-      alert("There was an error deleting the post, try again");
+    //console.log(token);
+    if (window.confirm("Deletar post?")) {
+      try{
+        await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+        configs
+        );
+        alert('post deletado');
+      } catch(error) {
+        console.log(error);
+        alert("There was an error deleting the post, try again");
+      }
     }
 
   }

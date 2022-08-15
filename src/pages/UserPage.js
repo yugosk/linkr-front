@@ -20,6 +20,7 @@ export default function UserPage() {
     const [loading, setLoading] = useState(true);
     const [postList, setPostList] = useState([]);
     const [username,setUsername] = useState("");
+    const [userPicture,setUserPicture] = useState("");
 
   async function getPosts() {
     const configs = {
@@ -33,17 +34,20 @@ export default function UserPage() {
       setPostList(promise.data);
       setLoading(false);
       setUsername(promise.data[0].username);
+      setUserPicture(promise.data[0].picture);
     } catch (err) {
       console.log(err);
     }
   }
 
   useEffect(() => getPosts(), []);
+
   return (
     <PageContainer>
       <TimelineContainer>
         <TimelineTitle>
-          <h1>{username}</h1>
+            <img src={userPicture} alt='user picture'/>
+            <h1>{username}</h1>
         </TimelineTitle>
         <PostList loading={loading} posts={postList} userId={userId}/>
       </TimelineContainer>

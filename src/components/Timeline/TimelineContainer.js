@@ -10,4 +10,8 @@ export default styled.div`
   flex-direction: column;
   padding: 0;
   //overflow: scroll;
+
+  @media (max-width: 612px) {
+  margin-left:0px;
+  }
 `;

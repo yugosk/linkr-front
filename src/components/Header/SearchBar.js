@@ -80,7 +80,7 @@ const Container = styled.div`
 
   @media (max-width: 612px) {
     position: absolute;
-    top: 76px;
+    top: 70px;
     width: calc(100% - 56px);
     margin: 0;
   }

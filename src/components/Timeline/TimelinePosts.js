@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import Modal from "react-modal";
+import { Link } from "react-router-dom";
 import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart,AiTwotoneDelete } from "react-icons/ai";
+import { BsPencilFill } from "react-icons/bs";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
@@ -56,7 +59,9 @@ const PostContent = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   margin-top: 17px;
-  h1 {
+  position:relative;
+  //border: 5px solid blue;
+  h1,a {
     font-family: "Lato";
     font-weight: 400;
     font-size: 19px;
@@ -65,6 +70,10 @@ const PostContent = styled.div`
     line-height: 23px;
     margin-bottom: 7px;
   }
+  a:hover{
+    cursor:pointer;
+    text-decoration:underline;
+}
 
   p {
     font-family: "Lato";
@@ -76,6 +85,41 @@ const PostContent = styled.div`
     margin-bottom: 12px;
     padding-right: 22px;
     min-height: 52px;
+  }
+  .icons{
+    //background-color:blue;
+    position:absolute;
+    top:0px;
+    right:24px;
+    
+  }
+  svg {
+    color:#ac0000;
+    height: 24px;
+    width: 24px;
+    margin-left:14px;
+    :hover{
+      cursor:pointer;
+    }
+  }
+  .mymodal{
+    width: 597px;
+    height: 262px;
+    left: 413px;
+    top: 349px;
+
+    background: #333333;
+    border-radius: 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 1px solid #ccc;
+    overflow: auto;
+    //border-radius: 4px;
+    outline: none;
+    padding: 20px;
   }
 
   @media (max-width: 612px) {
@@ -317,6 +361,7 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
 function SinglePost({
   postId,
   picture,
+  postOwner,
   username,
   description,
   url,
@@ -336,6 +381,27 @@ function SinglePost({
 
   const navigate = useNavigate();
 
+  async function deleting(postId){
+    const configs = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    alert(`deletar post ${postId}!`);
+    try{
+      await axios.delete(
+      `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+      configs
+      );
+    } catch(error) {
+      console.log(error);
+      alert("There was an error deleting the post, try again");
+    }
+
+  }
+
+
+
+  const link = '/user/' + postOwner;
+
   if (metaImage === "Metadata not available" || metaImage === "") {
     return (
       <Post>
@@ -351,12 +417,18 @@ function SinglePost({
           />
         </PostLeft>
         <PostContent>
-          <h1>{username}</h1>
+        {userId === postOwner ? <div className="icons">
+          <BsPencilFill color="white"/>
+          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
+        </div>
+          : ""}
+          <Link key={postId} to={link} >{username}</Link>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
           >
-            <p>{description}</p>
+          <p>{description}</p>
+            
           </ReactTagify>
           <PostSnippet>
             <SnippetText>
@@ -388,12 +460,17 @@ function SinglePost({
           />
         </PostLeft>
         <PostContent>
-          <h1>{username}</h1>
+        {userId == postOwner ? <div className="icons">
+          <BsPencilFill color="white"/>
+          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
+        </div>
+         : ""}
+          <Link key={postId} to={link} >{username}</Link>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
           >
-            <p>{description}</p>
+          <p>{description}</p>
           </ReactTagify>
           <PostSnippet>
             <SnippetText>
@@ -425,6 +502,7 @@ function MapPosts({ posts, userId, token, isLiked }) {
           username={post.username}
           description={post.description}
           url={post.url}
+          postOwner={post.postOwner}
           metaTitle={post.metaTitle}
           metaImage={post.metaImage}
           metaDescription={post.metaDescription}

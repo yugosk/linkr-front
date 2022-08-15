@@ -4,11 +4,6 @@ import BoxStyles from "./BoxStyles";
 import { useState, useEffect } from "react";
 
 export default function TrendingBox(){
-
-    //const tagsList = axios.get('https://projeto17-linkr-back-end1.herokuapp.com/trendigtags');
-    /*const tagsList = [{name:'tag1'},{name:'tag2'},{name:'tag3'},{name:'tag4'}
-    ,{name:'tag5'},{name:'tag6'},{name:'tag7'},,{name:'tag8'},{name:'tag9'},{name:'tag10'}];*/
-    //const tagsList = [];
     const [tagsList,setTagsList] = useState([]);
 
     async function getTags() {
@@ -24,7 +19,7 @@ export default function TrendingBox(){
     useEffect(() => getTags(), []);
     
     function displayTag(tag){
-        const link = '/hashatag/' + tag.trendingTags;
+        const link = '/hashtag/' + tag.trendingTags;
         return(
             <Link key={tag.tagId} to={link} ># {tag.trendingTags}</Link>
         )

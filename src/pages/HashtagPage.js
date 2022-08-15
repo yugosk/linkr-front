@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
 import PageContainer from "../components/Timeline/PageContainer";
@@ -14,6 +15,7 @@ import PostList from "../components/Timeline/TimelinePosts";
 import TrendingBox from "../components/Trending/TrendingBox"
 
 export default function TimelinePage() {
+    const {hashtag} = useParams();
   const { getSession } = useContext(UserContext);
   const { token, picture, userId } = getSession();
   const [url, setUrl] = useState("");
@@ -29,7 +31,7 @@ export default function TimelinePage() {
     };
     try {
       const promise = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/posts`,
+        `${process.env.REACT_APP_API_BASE_URL}/hashtag/${hashtag}`,
         configs
       );
       setPostList(promise.data);
@@ -80,38 +82,8 @@ export default function TimelinePage() {
     <PageContainer>
       <TimelineContainer>
         <TimelineTitle>
-          <h1>timeline</h1>
+          <h1>{hashtag}</h1>
         </TimelineTitle>
-        <FormContainer>
-          <FormImage>
-            <img src={picture} alt="Profile" />
-          </FormImage>
-          <FormContent>
-            <h1>What are you going to share today?</h1>
-            <PublishForm onSubmit={submitPost}>
-              <input
-                type={"text"}
-                id="url"
-                value={url}
-                placeholder="http://..."
-                required
-                disabled={publishLoading}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-              <input
-                type={"text"}
-                id="description"
-                value={description}
-                placeholder="Awesome article about #javascript"
-                disabled={publishLoading}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <button type="submit" disabled={publishLoading}>
-                {publishButton}
-              </button>
-            </PublishForm>
-          </FormContent>
-        </FormContainer>
         <PostList loading={loading} posts={postList} userId={userId}/>
       </TimelineContainer>
       <TrendingBox />

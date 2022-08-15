@@ -40,7 +40,7 @@ export default function SignupPage() {
       navigate("/", { replace: true });
     } catch (err) {
       if (err.response.status === 409) {
-        alert("This email already has an account registered");
+        alert("This email or username already has an account registered");
       }
 
       setPostLoading(false);

@@ -115,7 +115,7 @@ export default function TimelinePage() {
         </FormContainer>
         <PostList loading={loading} posts={postList} token={token} />
       </TimelineContainer>
-      <TrendingBox />
+      <TrendingBox posts={postList} />
     </PageContainer>
   );
 }

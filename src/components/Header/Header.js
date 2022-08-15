@@ -32,6 +32,11 @@ const Container = styled.div`
   height: 72px;
   width: 100%;
   background-color: #151515;
+
+  @media (max-width: 612px) {
+    height: 140px;
+    align-items: flex-start;
+  }
 `;
 
 const Content = styled.div`
@@ -54,6 +59,8 @@ const Content = styled.div`
   }
 
   @media (max-width: 612px) {
+    margin-top: 10px;
+
     h1 {
       font-size: 44px;
     }

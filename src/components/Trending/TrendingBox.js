@@ -40,7 +40,7 @@ export default function TrendingBox(){
   useEffect(() => getTags(), []);
 
   function displayTag(tag) {
-    const link = "/hashatag/" + tag.trendingTags;
+    const link = "/hashtag/" + tag.trendingTags;
     return (
       <Link key={tag.tagId} to={link}>
         # {tag.trendingTags}

@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { ThreeDots } from "react-loader-spinner";
+
 import UserContext from "../contexts/userContext";
 
 import PageView from "../components/Authentication/PageView";
@@ -74,7 +76,11 @@ export default function SigninPage() {
           required
         />
         <Button type="submit" disabled={postLoading}>
-          Log in
+          {postLoading ? (
+            <ThreeDots color="#515151" height={10} width={80} />
+          ) : (
+            "Log in"
+          )}
         </Button>
         <Link to="/sign-up">First time? Create an account!</Link>
       </Form>

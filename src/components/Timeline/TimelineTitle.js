@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
+  align-items:center;
   width: 611px;
   text-align: left;
   height: 64px;
@@ -14,6 +15,12 @@ export default styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
+  }
+  img{
+    width: 50px;
+    height: 50px;
+    border-radius:50%;
+    margin-right:18px;
   }
 
   @media (max-width: 612px) {

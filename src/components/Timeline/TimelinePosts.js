@@ -304,13 +304,14 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
 
   async function postLike(postId) {
     const configs = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: token },
     };
     setDisabled(true);
     if (liked) {
       try {
+        console.log(configs);
         await axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/${postId}?userId=${userId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}`,
           configs
         );
         setLiked(false);
@@ -323,9 +324,10 @@ function PostLikes({ isLiked, likes, postId, userId, token }) {
       }
     } else {
       try {
+        console.log(configs);
         await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/${postId}`,
-          { userId },
+          `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}`,
+          {},
           configs
         );
         setLiked(true);
@@ -493,7 +495,7 @@ function SinglePost({
   }
 }
 
-function MapPosts({ posts, userId, token, isLiked }) {
+function MapPosts({ posts, userId, token }) {
   if (posts.length === 0) {
     return <NoPosts>There are no posts yet</NoPosts>;
   } else {

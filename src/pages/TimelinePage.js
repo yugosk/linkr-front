@@ -11,7 +11,7 @@ import {
   PublishForm,
 } from "../components/Timeline/TimelineForm";
 import PostList from "../components/Timeline/TimelinePosts";
-import TrendingBox from "../components/Trending/TrendingBox"
+import TrendingBox from "../components/Trending/TrendingBox";
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
@@ -114,7 +114,7 @@ export default function TimelinePage() {
         </FormContainer>
         <PostList loading={loading} posts={postList} userId={userId} token={token}/>
       </TimelineContainer>
-      <TrendingBox />
+      <TrendingBox posts={postList} />
     </PageContainer>
   );
 }

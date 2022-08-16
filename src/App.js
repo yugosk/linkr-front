@@ -10,6 +10,8 @@ import Header from "./components/Header/Header";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TimelinePage from "./pages/TimelinePage";
+import HashtagPage from "./pages/HashtagPage";
+import UserPage from "./pages/UserPage"
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/" element={<SigninPage />} />
           <Route path="/sign-up" element={<SignupPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
+          <Route path="/hashtag/:hashtag" element={<HashtagPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
         </Routes>
       </UserContextProvider>
     </BrowserRouter>

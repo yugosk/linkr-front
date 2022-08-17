@@ -51,8 +51,8 @@ export default function SearchBar() {
         type="text"
         value={name}
         onChange={searchPeople}
-        onFocus={() => {
-          searchPeople();
+        onFocus={(e) => {
+          searchPeople(e);
           setFocused(true);
         }}
         onBlur={() => setFocused(false)}

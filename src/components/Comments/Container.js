@@ -39,7 +39,7 @@ export default function CommentsContainer({ postId }) {
           <Comment key={comment.id} comment={comment} />
         ))}
       </Comments>
-      <Input />
+      <Input postId={postId} getCommentsList={getCommentsList} />
     </Container>
   );
 }

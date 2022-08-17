@@ -4,28 +4,56 @@ import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
 
 import UserContext from "../../contexts/userContext";
+import axios from "axios";
 
-export default function Input() {
+export default function Input({ postId, getCommentsList }) {
   const { getSession } = useContext(UserContext);
-  const { picture } = getSession();
+  const { picture, token } = getSession();
 
   const [text, setText] = useState("");
+  const [postLoading, setPostLoading] = useState(false);
+
+  async function createComment(e) {
+    e.preventDefault();
+    setPostLoading(true);
+
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/posts/${postId}/comments`,
+        { text },
+        { headers: { Authorization: token } }
+      );
+
+      setText("");
+      getCommentsList();
+    } catch {
+      alert(
+        "An error occured while posting a comment on this post, try again later"
+      );
+    } finally {
+      setPostLoading(false);
+    }
+  }
 
   return (
-    <Container>
+    <Container onSubmit={createComment}>
       <img src={picture} alt="Profile" />
       <input
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="write a comment..."
+        disabled={postLoading}
+        required
       />
-      <FiSend />
+      <Button type="submit" disabled={postLoading}>
+        <FiSend />
+      </Button>
     </Container>
   );
 }
 
-const Container = styled.div`
+const Container = styled.form`
   position: relative;
   display: flex;
   align-items: center;
@@ -49,11 +77,17 @@ const Container = styled.div`
       color: #575757;
     }
   }
+`;
 
-  > svg {
-    position: absolute;
-    top: 34px;
-    right: 10px;
+const Button = styled.button`
+  position: absolute;
+  top: 34px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  svg {
     height: 18px;
     width: 18px;
     color: #c6c6c6;

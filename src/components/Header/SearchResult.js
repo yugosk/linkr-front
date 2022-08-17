@@ -26,7 +26,7 @@ export default function SearchResult({ usersList, getLoading, resetSearch }) {
 
   return (
     <Container>
-      {usersList.map(({ id, picture, username }) => (
+      {usersList.map(({ id, picture, username, isFollowing }) => (
         <SearchOption
           key={id}
           onMouseDown={() => {
@@ -36,6 +36,7 @@ export default function SearchResult({ usersList, getLoading, resetSearch }) {
         >
           <img src={picture} alt="Profile" />
           <p>{username}</p>
+          {isFollowing && <p>• following</p>}
         </SearchOption>
       ))}
     </Container>
@@ -79,5 +80,9 @@ const SearchOption = styled.div`
     font-weight: 400;
     font-size: 19px;
     color: #515151;
+  }
+
+  p:nth-of-type(2) {
+    color: #c5c5c5;
   }
 `;

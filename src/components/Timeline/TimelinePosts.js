@@ -497,7 +497,7 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        {isCommentsVisible && <CommentsContainer />}
+        {isCommentsVisible && <CommentsContainer postId={postId} />}
       </div>
     );
   } else {
@@ -555,7 +555,7 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        {isCommentsVisible && <CommentsContainer />}
+        {isCommentsVisible && <CommentsContainer postId={postId} />}
       </div>
     );
   }

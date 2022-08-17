@@ -1,19 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Comment() {
+export default function Comment({ comment }) {
+  const { username, userId, picture, text, isFollowing, isOwner } = comment;
+
+  const navigate = useNavigate();
+
   return (
     <Container>
-      <img
-        src="https://static.remove.bg/remove-bg-web/f9c9a2813e0321c04d66062f8cca92aedbefced7/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png"
-        alt="Profile"
-      />
+      <img src={picture} alt="Profile" />
       <div>
         <p>
-          Pessoa
-          <span>• post's author</span>
-          <span>• following</span>
+          <span onClick={() => navigate(`/user/${userId}`)}>{username}</span>
+          {isOwner && <span> • post's author</span>}
+          {!isOwner && isFollowing && <span> • following</span>}
         </p>
-        <p>Comment</p>
+        <p>{text}</p>
       </div>
     </Container>
   );
@@ -42,12 +44,17 @@ const Container = styled.div`
     word-wrap: break-word;
   }
 
-  p:nth-of-type(1) {
-    color: #f3f3f3;
-  }
-
   p:nth-of-type(2) {
     color: #acacac;
+  }
+
+  span:nth-of-type(1) {
+    color: #f3f3f3;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   span {

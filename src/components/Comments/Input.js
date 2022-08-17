@@ -30,6 +30,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 22px 0;
 
   input {
     padding: 0 34px 0 14px;

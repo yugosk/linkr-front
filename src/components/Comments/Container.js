@@ -15,7 +15,7 @@ export default function CommentsContainer() {
 const Container = styled.div`
   padding: 24px 24px 0;
   border-radius: 16px;
-  margin: -24px 0 30px;
+  margin-top: -24px;
   width: 611px;
   background-color: #1e1e1e;
 

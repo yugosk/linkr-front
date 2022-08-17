@@ -6,14 +6,27 @@ import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiTwotoneDelete,
+  AiOutlineComment,
+} from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
 import CommentsContainer from "../Comments/Container";
 
+const PostsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+`;
+
 const Post = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   background-color: #171717;
   flex-direction: row;
@@ -23,7 +36,6 @@ const Post = styled.div`
   border-radius: 16px;
   box-sizing: content-box;
   padding-bottom: 20px;
-  z-index: 1;
 
   @media (max-width: 612px) {
     width: 100%;
@@ -40,6 +52,7 @@ const PostLeft = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 20px;
   margin-top: 17px;
 
   img {
@@ -269,6 +282,27 @@ const StyledLikes = styled.div`
   }
 `;
 
+const CommentIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    height: 26px;
+    width: 26px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 11px;
+    text-align: center;
+    color: #ffffff;
+  }
+`;
+
 function defineTooltip(likes, isLiked, count, userId) {
   const newLikes = likes.filter((i) => i.userId !== userId);
   if (likes.length === 0) {
@@ -385,6 +419,8 @@ function SinglePost({
 
   const navigate = useNavigate();
 
+  const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+
   async function deleting(postId) {
     const configs = {
       headers: { Authorization: `${token}` },
@@ -408,11 +444,10 @@ function SinglePost({
 
   if (metaImage === "Metadata not available" || metaImage === "") {
     return (
-      <>
+      <div>
         <Post>
           <PostLeft>
             <img src={picture} />
-            <br />
             <PostLikes
               likes={likes}
               isLiked={isLiked}
@@ -420,6 +455,12 @@ function SinglePost({
               userId={userId}
               token={token}
             />
+            <CommentIcon>
+              <AiOutlineComment
+                onClick={() => setIsCommentsVisible((prev) => !prev)}
+              />
+              <p>0 comments</p>
+            </CommentIcon>
           </PostLeft>
           <PostContent>
             {userId === postOwner ? (
@@ -456,16 +497,15 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        <CommentsContainer />
-      </>
+        {isCommentsVisible && <CommentsContainer />}
+      </div>
     );
   } else {
     return (
-      <>
+      <div>
         <Post>
           <PostLeft>
             <img src={picture} />
-            <br />
             <PostLikes
               likes={likes}
               isLiked={isLiked}
@@ -473,6 +513,12 @@ function SinglePost({
               userId={userId}
               token={token}
             />
+            <CommentIcon>
+              <AiOutlineComment
+                onClick={() => setIsCommentsVisible((prev) => !prev)}
+              />
+              <p>0 comments</p>
+            </CommentIcon>
           </PostLeft>
           <PostContent>
             {userId == postOwner ? (
@@ -509,8 +555,8 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        <CommentsContainer />
-      </>
+        {isCommentsVisible && <CommentsContainer />}
+      </div>
     );
   }
 }
@@ -548,6 +594,10 @@ export default function PostList({ loading, posts, userId, token }) {
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />
     );
   } else {
-    return <MapPosts posts={posts} userId={userId} token={token} />;
+    return (
+      <PostsContainer>
+        <MapPosts posts={posts} userId={userId} token={token} />;
+      </PostsContainer>
+    );
   }
 }

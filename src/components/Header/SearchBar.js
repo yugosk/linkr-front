@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
 import { DebounceInput } from "react-debounce-input";
 import { AiOutlineSearch } from "react-icons/ai";
+
+import UserContext from "../../contexts/userContext";
+
 import SearchResult from "./SearchResult";
 
 export default function SearchBar() {
+  const { getSession } = useContext(UserContext);
+  const { token } = getSession();
+
   const [name, setName] = useState("");
   const [focused, setFocused] = useState(false);
   const [usersList, setUsersList] = useState([]);
@@ -21,7 +27,8 @@ export default function SearchBar() {
     try {
       if (typedName.length !== 0) {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/users?name=${typedName}`
+          `${process.env.REACT_APP_API_BASE_URL}/users?name=${typedName}`,
+          { headers: { Authorization: token } }
         );
 
         setUsersList(response.data);

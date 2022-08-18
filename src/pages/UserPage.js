@@ -47,9 +47,13 @@ export default function UserPage() {
           <h1>{username}</h1>
           <FollowContainer followedId={id} userId={userId} />
         </TimelineTitle>
-        <PostList loading={loading} posts={postList} />
+        <div>
+          <div>
+            <PostList loading={loading} posts={postList} />
+          </div>
+          <TrendingBox />
+        </div>
       </TimelineContainer>
-      <TrendingBox />
     </PageContainer>
   );
 }

@@ -226,7 +226,6 @@ const SnippetText = styled.div`
 const SnippetImage = styled.div`
   display: flex;
   width: 30%;
-  height: 100%;
   align-items: center;
   justify-content: center;
 
@@ -410,6 +409,7 @@ function SinglePost({
   userId,
   token,
   isLiked,
+  comments = 0,
 }) {
   const tagStyle = {
     color: "#ffffff",
@@ -420,6 +420,7 @@ function SinglePost({
   const navigate = useNavigate();
 
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+  const [commentsCount, setCommentsCount] = useState(comments);
 
   async function deleting(postId) {
     const configs = {
@@ -459,7 +460,7 @@ function SinglePost({
               <AiOutlineComment
                 onClick={() => setIsCommentsVisible((prev) => !prev)}
               />
-              <p>0 comments</p>
+              <p>{commentsCount} comments</p>
             </CommentIcon>
           </PostLeft>
           <PostContent>
@@ -497,7 +498,12 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        {isCommentsVisible && <CommentsContainer postId={postId} />}
+        {isCommentsVisible && (
+          <CommentsContainer
+            postId={postId}
+            setCommentsCount={setCommentsCount}
+          />
+        )}
       </div>
     );
   } else {
@@ -517,7 +523,7 @@ function SinglePost({
               <AiOutlineComment
                 onClick={() => setIsCommentsVisible((prev) => !prev)}
               />
-              <p>0 comments</p>
+              <p>{commentsCount} comments</p>
             </CommentIcon>
           </PostLeft>
           <PostContent>
@@ -555,7 +561,12 @@ function SinglePost({
             </PostSnippet>
           </PostContent>
         </Post>
-        {isCommentsVisible && <CommentsContainer postId={postId} />}
+        {isCommentsVisible && (
+          <CommentsContainer
+            postId={postId}
+            setCommentsCount={setCommentsCount}
+          />
+        )}
       </div>
     );
   }
@@ -596,7 +607,7 @@ export default function PostList({ loading, posts, userId, token }) {
   } else {
     return (
       <PostsContainer>
-        <MapPosts posts={posts} userId={userId} token={token} />;
+        <MapPosts posts={posts} userId={userId} token={token} />
       </PostsContainer>
     );
   }

@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import UserContext from "../../contexts/userContext";
@@ -7,6 +8,7 @@ import SearchBar from "./SearchBar";
 import Menu from "./Menu";
 
 export default function Header() {
+  const navigate = useNavigate();
   const { authenticated } = useContext(UserContext);
 
   if (!authenticated) return <></>;
@@ -14,7 +16,7 @@ export default function Header() {
   return (
     <Container>
       <Content>
-        <h1>linkr</h1>
+        <h1 onClick={() => navigate("/timeline")}>linkr</h1>
         <SearchBar />
         <Menu />
       </Content>

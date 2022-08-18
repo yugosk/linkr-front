@@ -7,7 +7,7 @@ import UserContext from "../../contexts/userContext";
 import Comment from "./Comment";
 import Input from "./Input";
 
-export default function CommentsContainer({ postId }) {
+export default function CommentsContainer({ postId, setCommentsCount }) {
   const { getSession } = useContext(UserContext);
   const { token } = getSession();
 
@@ -21,6 +21,7 @@ export default function CommentsContainer({ postId }) {
       );
 
       setCommentsList(response.data);
+      setCommentsCount(response.data.length);
     } catch {
       alert(
         "An error occured while fetchng comments from this post, try again later"

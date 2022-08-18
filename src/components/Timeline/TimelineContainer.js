@@ -2,16 +2,28 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
-  height: 100vh;
-  //width: 100vw;
-  margin-left: 20px;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 934px;
+  margin: 0 20px;
   background-color: #333333;
-  align-items: center;
   flex-direction: column;
-  padding: 0;
+  padding-bottom: 20px;
   //overflow: scroll;
 
+  > div:nth-of-type(2) {
+    display: flex;
+    justify-content: space-between;
+
+    > div:nth-of-type(1) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 611px;
+    }
+  }
+
   @media (max-width: 612px) {
-    margin-left: 0px;
+    margin: 0px;
   }
 `;

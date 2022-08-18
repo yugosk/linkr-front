@@ -82,39 +82,48 @@ export default function TimelinePage() {
         <TimelineTitle>
           <h1>timeline</h1>
         </TimelineTitle>
-        <FormContainer>
-          <FormImage>
-            <img src={picture} alt="Profile" />
-          </FormImage>
-          <FormContent>
-            <h1>What are you going to share today?</h1>
-            <PublishForm onSubmit={submitPost}>
-              <input
-                type={"text"}
-                id="url"
-                value={url}
-                placeholder="http://..."
-                required
-                disabled={publishLoading}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-              <input
-                type={"text"}
-                id="description"
-                value={description}
-                placeholder="Awesome article about #javascript"
-                disabled={publishLoading}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <button type="submit" disabled={publishLoading}>
-                {publishButton}
-              </button>
-            </PublishForm>
-          </FormContent>
-        </FormContainer>
-        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
+        <div>
+          <div>
+            <FormContainer>
+              <FormImage>
+                <img src={picture} alt="Profile" />
+              </FormImage>
+              <FormContent>
+                <h1>What are you going to share today?</h1>
+                <PublishForm onSubmit={submitPost}>
+                  <input
+                    type={"text"}
+                    id="url"
+                    value={url}
+                    placeholder="http://..."
+                    required
+                    disabled={publishLoading}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                  <input
+                    type={"text"}
+                    id="description"
+                    value={description}
+                    placeholder="Awesome article about #javascript"
+                    disabled={publishLoading}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <button type="submit" disabled={publishLoading}>
+                    {publishButton}
+                  </button>
+                </PublishForm>
+              </FormContent>
+            </FormContainer>
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+            />
+          </div>
+          <TrendingBox posts={postList} />
+        </div>
       </TimelineContainer>
-      <TrendingBox posts={postList} />
     </PageContainer>
   );
 }

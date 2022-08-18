@@ -6,12 +6,27 @@ import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { AiFillHeart, AiOutlineHeart,AiTwotoneDelete } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiTwotoneDelete,
+  AiOutlineComment,
+} from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
+import CommentsContainer from "../Comments/Container";
+
+const PostsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+`;
+
 const Post = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   background-color: #171717;
   flex-direction: row;
@@ -19,7 +34,6 @@ const Post = styled.div`
   min-height: 276px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  margin-bottom: 30px;
   box-sizing: content-box;
   padding-bottom: 20px;
 
@@ -28,7 +42,7 @@ const Post = styled.div`
     height: 232px;
     border-radius: 0;
     padding: 0 0 8px 0;
-    margion-bottom: 16px;
+    /* margin-bottom: 16px; */
   }
 `;
 
@@ -38,6 +52,7 @@ const PostLeft = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 20px;
   margin-top: 17px;
 
   img {
@@ -59,9 +74,10 @@ const PostContent = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   margin-top: 17px;
-  position:relative;
+  position: relative;
   //border: 5px solid blue;
-  h1,a {
+  h1,
+  a {
     font-family: "Lato";
     font-weight: 400;
     font-size: 19px;
@@ -70,10 +86,10 @@ const PostContent = styled.div`
     line-height: 23px;
     margin-bottom: 7px;
   }
-  a:hover{
-    cursor:pointer;
-    text-decoration:underline;
-}
+  a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 
   p {
     font-family: "Lato";
@@ -86,23 +102,22 @@ const PostContent = styled.div`
     padding-right: 22px;
     min-height: 52px;
   }
-  .icons{
+  .icons {
     //background-color:blue;
-    position:absolute;
-    top:0px;
-    right:24px;
-    
+    position: absolute;
+    top: 0px;
+    right: 24px;
   }
   svg {
-    color:#ac0000;
+    color: #ac0000;
     height: 24px;
     width: 24px;
-    margin-left:14px;
-    :hover{
-      cursor:pointer;
+    margin-left: 14px;
+    :hover {
+      cursor: pointer;
     }
   }
-  .mymodal{
+  .mymodal {
     width: 597px;
     height: 262px;
     left: 413px;
@@ -267,6 +282,27 @@ const StyledLikes = styled.div`
   }
 `;
 
+const CommentIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    height: 26px;
+    width: 26px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 11px;
+    text-align: center;
+    color: #ffffff;
+  }
+`;
+
 function defineTooltip(likes, isLiked, count, userId) {
   const newLikes = likes.filter((i) => i.userId !== userId);
   if (likes.length === 0) {
@@ -383,114 +419,144 @@ function SinglePost({
 
   const navigate = useNavigate();
 
-  async function deleting(postId){
+  const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+
+  async function deleting(postId) {
     const configs = {
       headers: { Authorization: `${token}` },
     };
     //console.log(token);
     if (window.confirm("Deletar post?")) {
-      try{
+      try {
         await axios.delete(
-        `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
-        configs
+          `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+          configs
         );
-        alert('post deletado');
-      } catch(error) {
+        alert("post deletado");
+      } catch (error) {
         console.log(error);
         alert("There was an error deleting the post, try again");
       }
     }
-
   }
 
-
-
-  const link = '/user/' + postOwner;
+  const link = "/user/" + postOwner;
 
   if (metaImage === "Metadata not available" || metaImage === "") {
     return (
-      <Post>
-        <PostLeft>
-          <img src={picture} />
-          <br />
-          <PostLikes
-            likes={likes}
-            isLiked={isLiked}
-            postId={postId}
-            userId={userId}
-            token={token}
-          />
-        </PostLeft>
-        <PostContent>
-        {userId === postOwner ? <div className="icons">
-          <BsPencilFill color="white"/>
-          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
-        </div>
-          : ""}
-          <Link key={postId} to={link} >{username}</Link>
-          <ReactTagify
-            tagStyle={tagStyle}
-            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
-          >
-          <p>{description}</p>
-            
-          </ReactTagify>
-          <PostSnippet>
-            <SnippetText>
-              <h1>{metaTitle}</h1>
-              <p>{metaDescription.slice(0, 159)}</p>
-              <a href={url} target="_blank" rel="noreferrer">
-                {url}
-              </a>
-            </SnippetText>
-            <SnippetImage>
-              <MdBrokenImage size={"32px"} color="#b7b7b7" />
-            </SnippetImage>
-          </PostSnippet>
-        </PostContent>
-      </Post>
+      <div>
+        <Post>
+          <PostLeft>
+            <img src={picture} />
+            <PostLikes
+              likes={likes}
+              isLiked={isLiked}
+              postId={postId}
+              userId={userId}
+              token={token}
+            />
+            <CommentIcon>
+              <AiOutlineComment
+                onClick={() => setIsCommentsVisible((prev) => !prev)}
+              />
+              <p>0 comments</p>
+            </CommentIcon>
+          </PostLeft>
+          <PostContent>
+            {userId === postOwner ? (
+              <div className="icons">
+                <BsPencilFill color="white" />
+                <AiTwotoneDelete
+                  color="white"
+                  onClick={() => deleting(postId)}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            <Link key={postId} to={link}>
+              {username}
+            </Link>
+            <ReactTagify
+              tagStyle={tagStyle}
+              tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+            >
+              <p>{description}</p>
+            </ReactTagify>
+            <PostSnippet>
+              <SnippetText>
+                <h1>{metaTitle}</h1>
+                <p>{metaDescription.slice(0, 159)}</p>
+                <a href={url} target="_blank" rel="noreferrer">
+                  {url}
+                </a>
+              </SnippetText>
+              <SnippetImage>
+                <MdBrokenImage size={"32px"} color="#b7b7b7" />
+              </SnippetImage>
+            </PostSnippet>
+          </PostContent>
+        </Post>
+        {isCommentsVisible && <CommentsContainer postId={postId} />}
+      </div>
     );
   } else {
     return (
-      <Post>
-        <PostLeft>
-          <img src={picture} />
-          <br />
-          <PostLikes
-            likes={likes}
-            isLiked={isLiked}
-            postId={postId}
-            userId={userId}
-            token={token}
-          />
-        </PostLeft>
-        <PostContent>
-        {userId == postOwner ? <div className="icons">
-          <BsPencilFill color="white"/>
-          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
-        </div>
-         : ""}
-          <Link key={postId} to={link} >{username}</Link>
-          <ReactTagify
-            tagStyle={tagStyle}
-            tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
-          >
-          <p>{description}</p>
-          </ReactTagify>
-          <PostSnippet>
-            <SnippetText>
-              <h1>{metaTitle}</h1>
-              <p>{metaDescription.slice(0, 159)}</p>
-              <a href={url} target="_blank" rel="noreferrer">
-                {url}
-              </a>
-            </SnippetText>
-            <SnippetImage>
-              <img src={metaImage} />
-            </SnippetImage>
-          </PostSnippet>
-        </PostContent>
-      </Post>
+      <div>
+        <Post>
+          <PostLeft>
+            <img src={picture} />
+            <PostLikes
+              likes={likes}
+              isLiked={isLiked}
+              postId={postId}
+              userId={userId}
+              token={token}
+            />
+            <CommentIcon>
+              <AiOutlineComment
+                onClick={() => setIsCommentsVisible((prev) => !prev)}
+              />
+              <p>0 comments</p>
+            </CommentIcon>
+          </PostLeft>
+          <PostContent>
+            {userId == postOwner ? (
+              <div className="icons">
+                <BsPencilFill color="white" />
+                <AiTwotoneDelete
+                  color="white"
+                  onClick={() => deleting(postId)}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            <Link key={postId} to={link}>
+              {username}
+            </Link>
+            <ReactTagify
+              tagStyle={tagStyle}
+              tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+            >
+              <p>{description}</p>
+            </ReactTagify>
+            <PostSnippet>
+              <SnippetText>
+                <h1>{metaTitle}</h1>
+                <p>{metaDescription.slice(0, 159)}</p>
+                <a href={url} target="_blank" rel="noreferrer">
+                  {url}
+                </a>
+              </SnippetText>
+              <SnippetImage>
+                <img src={metaImage} />
+              </SnippetImage>
+            </PostSnippet>
+          </PostContent>
+        </Post>
+        {isCommentsVisible && <CommentsContainer postId={postId} />}
+      </div>
     );
   }
 }
@@ -528,6 +594,10 @@ export default function PostList({ loading, posts, userId, token }) {
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />
     );
   } else {
-    return <MapPosts posts={posts} userId={userId} token={token} />;
+    return (
+      <PostsContainer>
+        <MapPosts posts={posts} userId={userId} token={token} />;
+      </PostsContainer>
+    );
   }
 }

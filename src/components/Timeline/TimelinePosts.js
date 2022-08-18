@@ -22,6 +22,8 @@ const PostsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 44px;
+  width: 100%;
+  max-width: 611px;
 `;
 
 const Post = styled.div`
@@ -439,6 +441,10 @@ function SinglePost({
         alert("There was an error deleting the post, try again");
       }
     }
+  }
+
+  if (description === null) {
+    description = "essa descricao eh null";
   }
 
   const link = "/user/" + postOwner;

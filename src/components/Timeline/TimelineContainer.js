@@ -24,6 +24,6 @@ export default styled.div`
   }
 
   @media (max-width: 612px) {
-    margin-left: 0px;
+    margin: 0px;
   }
 `;

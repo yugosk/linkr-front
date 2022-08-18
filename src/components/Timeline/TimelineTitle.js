@@ -30,7 +30,7 @@ export default styled.div`
     height: 87px;
     margin-top: 140px;
     margin-bottom: 0;
-    padding-left: 17px;
+    padding: 17px;
 
     h1 {
       font-weight: 700;

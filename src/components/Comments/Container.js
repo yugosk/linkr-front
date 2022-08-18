@@ -68,6 +68,12 @@ const Container = styled.div`
 const Comments = styled.div`
   max-height: 300px;
   overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   > div {
     padding: 22px 0;

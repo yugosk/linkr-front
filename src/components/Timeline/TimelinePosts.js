@@ -6,8 +6,9 @@ import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { AiFillHeart, AiOutlineHeart,AiTwotoneDelete } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart, AiTwotoneDelete } from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
+import { HiRefresh } from "react-icons/hi";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
@@ -28,7 +29,7 @@ const Post = styled.div`
     height: 232px;
     border-radius: 0;
     padding: 0 0 8px 0;
-    margion-bottom: 16px;
+    margin-bottom: 16px;
   }
 `;
 
@@ -59,9 +60,10 @@ const PostContent = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   margin-top: 17px;
-  position:relative;
+  position: relative;
   //border: 5px solid blue;
-  h1,a {
+  h1,
+  a {
     font-family: "Lato";
     font-weight: 400;
     font-size: 19px;
@@ -70,10 +72,10 @@ const PostContent = styled.div`
     line-height: 23px;
     margin-bottom: 7px;
   }
-  a:hover{
-    cursor:pointer;
-    text-decoration:underline;
-}
+  a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 
   p {
     font-family: "Lato";
@@ -86,23 +88,22 @@ const PostContent = styled.div`
     padding-right: 22px;
     min-height: 52px;
   }
-  .icons{
+  .icons {
     //background-color:blue;
-    position:absolute;
-    top:0px;
-    right:24px;
-    
+    position: absolute;
+    top: 0px;
+    right: 24px;
   }
   svg {
-    color:#ac0000;
+    color: #ac0000;
     height: 24px;
     width: 24px;
-    margin-left:14px;
-    :hover{
-      cursor:pointer;
+    margin-left: 14px;
+    :hover {
+      cursor: pointer;
     }
   }
-  .mymodal{
+  .mymodal {
     width: 597px;
     height: 262px;
     left: 413px;
@@ -267,6 +268,44 @@ const StyledLikes = styled.div`
   }
 `;
 
+const StyledNewPost = styled.div`
+  display: flex;
+  background-color: #1877f2;
+  flex-direction: row;
+  width: 611px;
+  height: 61px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  margin-bottom: 17px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 21px 0 21px 0;
+  cursor: pointer;
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    color: #ffffff;
+    margin-right: 14px;
+  }
+
+  svg {
+    color: #ffffff;
+    width: 22px;
+    height: 16px;
+  }
+
+  @media (max-width: 612px) {
+    width: 100%;
+    border-radius: 0;
+    padding: 0 0 8px 0;
+    margin-bottom: 16px;
+  }
+`;
+
 function defineTooltip(likes, isLiked, count, userId) {
   const newLikes = likes.filter((i) => i.userId !== userId);
   if (likes.length === 0) {
@@ -383,29 +422,26 @@ function SinglePost({
 
   const navigate = useNavigate();
 
-  async function deleting(postId){
+  async function deleting(postId) {
     const configs = {
       headers: { Authorization: `${token}` },
     };
     //console.log(token);
     if (window.confirm("Deletar post?")) {
-      try{
+      try {
         await axios.delete(
-        `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
-        configs
+          `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+          configs
         );
-        alert('post deletado');
-      } catch(error) {
+        alert("post deletado");
+      } catch (error) {
         console.log(error);
         alert("There was an error deleting the post, try again");
       }
     }
-
   }
 
-
-
-  const link = '/user/' + postOwner;
+  const link = "/user/" + postOwner;
 
   if (metaImage === "Metadata not available" || metaImage === "") {
     return (
@@ -422,18 +458,22 @@ function SinglePost({
           />
         </PostLeft>
         <PostContent>
-        {userId === postOwner ? <div className="icons">
-          <BsPencilFill color="white"/>
-          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
-        </div>
-          : ""}
-          <Link key={postId} to={link} >{username}</Link>
+          {userId === postOwner ? (
+            <div className="icons">
+              <BsPencilFill color="white" />
+              <AiTwotoneDelete color="white" onClick={() => deleting(postId)} />
+            </div>
+          ) : (
+            ""
+          )}
+          <Link key={postId} to={link}>
+            {username}
+          </Link>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
           >
-          <p>{description}</p>
-            
+            <p>{description}</p>
           </ReactTagify>
           <PostSnippet>
             <SnippetText>
@@ -465,17 +505,22 @@ function SinglePost({
           />
         </PostLeft>
         <PostContent>
-        {userId == postOwner ? <div className="icons">
-          <BsPencilFill color="white"/>
-          <AiTwotoneDelete color="white" onClick={() => deleting(postId)}/>
-        </div>
-         : ""}
-          <Link key={postId} to={link} >{username}</Link>
+          {userId == postOwner ? (
+            <div className="icons">
+              <BsPencilFill color="white" />
+              <AiTwotoneDelete color="white" onClick={() => deleting(postId)} />
+            </div>
+          ) : (
+            ""
+          )}
+          <Link key={postId} to={link}>
+            {username}
+          </Link>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
           >
-          <p>{description}</p>
+            <p>{description}</p>
           </ReactTagify>
           <PostSnippet>
             <SnippetText>
@@ -497,12 +542,14 @@ function SinglePost({
 
 function MapPosts({ posts, userId, token }) {
   if (posts === "No follows") {
-    return <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+    return (
+      <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+    );
   } else {
     if (posts.length === 0) {
       if (window.location.pathname === "/timeline") {
         return <NoPosts>No posts found from your friends</NoPosts>;
-      } else if (window.location.pathname.slice(1,5) === "user") {
+      } else if (window.location.pathname.slice(1, 5) === "user") {
         return <NoPosts>This user has not posted anything yet</NoPosts>;
       } else {
         return <NoPosts>This hashtag has not been used yet</NoPosts>;
@@ -532,13 +579,49 @@ function MapPosts({ posts, userId, token }) {
   }
 }
 
-export default function PostList({ loading, posts, userId, token }) {
-  console.log(`pathname: ${window.location.pathname}`)
+function NewPosts({ postList, newPostList, userId, token, setPostList }) {
+  if (newPostList.length === 0) {
+    return <MapPosts posts={postList} userId={userId} token={token} />;
+  } else {
+    if (postList[0].id === newPostList[0].id) {
+      return <MapPosts posts={postList} userId={userId} token={token} />;
+    } else {
+      return (
+        <>
+          <StyledNewPost onClick={() => setPostList(newPostList)}>
+            <p>x new posts, load more!</p>
+            <HiRefresh />
+          </StyledNewPost>
+          <MapPosts posts={postList} userId={userId} token={token} />
+        </>
+      );
+    }
+  }
+}
+
+export default function PostList({
+  loading,
+  posts,
+  userId,
+  token,
+  newPosts,
+  count,
+  setPostList,
+}) {
   if (loading) {
     return (
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />
     );
   } else {
-    return <MapPosts posts={posts} userId={userId} token={token} />;
+    return (
+      <NewPosts
+        postList={posts}
+        newPostList={newPosts}
+        userId={userId}
+        token={token}
+        count={count}
+        setPostList={setPostList}
+      />
+    );
   }
 }

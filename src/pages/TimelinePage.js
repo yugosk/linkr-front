@@ -12,6 +12,7 @@ import {
 } from "../components/Timeline/TimelineForm";
 import PostList from "../components/Timeline/TimelinePosts";
 import TrendingBox from "../components/Trending/TrendingBox";
+import useInterval from "use-interval";
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
@@ -22,6 +23,8 @@ export default function TimelinePage() {
   const [publishButton, setPublishButton] = useState("Publish");
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState([]);
+  const [newPostList, setNewPostList] = useState([]);
+  const [count, setCount] = useState(0);
 
   async function getPosts() {
     const configs = {
@@ -44,7 +47,24 @@ export default function TimelinePage() {
     }
   }
 
+  async function getNewPosts() {
+    const configs = {
+      headers: { Authorization: token },
+    };
+    try {
+      const promise = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/posts`,
+        configs
+      );
+      setNewPostList(promise.data);
+      setCount(count + 1);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => getPosts(), []);
+  useInterval(getNewPosts, 15000);
 
   async function submitPost(e) {
     e.preventDefault();
@@ -117,7 +137,14 @@ export default function TimelinePage() {
             </PublishForm>
           </FormContent>
         </FormContainer>
-        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
+        <PostList
+          loading={loading}
+          posts={postList}
+          userId={userId}
+          token={token}
+          newPosts={newPostList}
+          setPostList={setPostList}
+        />
       </TimelineContainer>
       <TrendingBox posts={postList} />
     </PageContainer>

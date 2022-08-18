@@ -496,33 +496,44 @@ function SinglePost({
 }
 
 function MapPosts({ posts, userId, token }) {
-  if (posts.length === 0) {
-    return <NoPosts>There are no posts yet</NoPosts>;
+  if (posts === "No follows") {
+    return <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
   } else {
-    return posts.map((post, index) => {
-      return (
-        <SinglePost
-          key={index}
-          picture={post.picture}
-          username={post.username}
-          description={post.description}
-          url={post.url}
-          postOwner={post.postOwner}
-          metaTitle={post.metaTitle}
-          metaImage={post.metaImage}
-          metaDescription={post.metaDescription}
-          likes={post.likes}
-          userId={userId}
-          token={token}
-          postId={post.id}
-          isLiked={post.isLiked}
-        />
-      );
-    });
+    if (posts.length === 0) {
+      if (window.location.pathname === "/timeline") {
+        return <NoPosts>No posts found from your friends</NoPosts>;
+      } else if (window.location.pathname.slice(1,5) === "user") {
+        return <NoPosts>This user has not posted anything yet</NoPosts>;
+      } else {
+        return <NoPosts>This hashtag has not been used yet</NoPosts>;
+      }
+    } else {
+      return posts.map((post, index) => {
+        return (
+          <SinglePost
+            key={index}
+            picture={post.picture}
+            username={post.username}
+            description={post.description}
+            url={post.url}
+            postOwner={post.postOwner}
+            metaTitle={post.metaTitle}
+            metaImage={post.metaImage}
+            metaDescription={post.metaDescription}
+            likes={post.likes}
+            userId={userId}
+            token={token}
+            postId={post.id}
+            isLiked={post.isLiked}
+          />
+        );
+      });
+    }
   }
 }
 
 export default function PostList({ loading, posts, userId, token }) {
+  console.log(`pathname: ${window.location.pathname}`)
   if (loading) {
     return (
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />

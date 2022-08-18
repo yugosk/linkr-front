@@ -32,10 +32,15 @@ export default function TimelinePage() {
         `${process.env.REACT_APP_API_BASE_URL}/posts`,
         configs
       );
-      setPostList(promise.data);
-      setLoading(false);
+      if (promise.data === "This user follows no one") {
+        setPostList("No follows");
+      } else {
+        setPostList(promise.data);
+      }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 

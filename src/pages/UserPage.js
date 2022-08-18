@@ -13,10 +13,6 @@ export default function UserPage() {
     const { id } = useParams();
     const { getSession } = useContext(UserContext);
     const { token, picture, userId } = getSession();
-    const [url, setUrl] = useState("");
-    const [description, setDescription] = useState("");
-    const [publishLoading, setPublishLoading] = useState(false);
-    const [publishButton, setPublishButton] = useState("Publish");
     const [loading, setLoading] = useState(true);
     const [postList, setPostList] = useState([]);
     const [username,setUsername] = useState("");
@@ -31,7 +27,9 @@ export default function UserPage() {
         `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
         configs
       );
-      setPostList(promise.data);
+      if (promise.data[0].url){
+        setPostList(promise.data);
+      }
       setLoading(false);
       setUsername(promise.data[0].username);
       setUserPicture(promise.data[0].picture);

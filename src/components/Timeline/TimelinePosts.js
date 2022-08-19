@@ -11,6 +11,7 @@ export default function PostList({
   newPosts,
   count,
   setPostList,
+  getPosts,
 }) {
   if (loading) {
     return (
@@ -26,6 +27,7 @@ export default function PostList({
           token={token}
           count={count}
           setPostList={setPostList}
+          getPosts={getPosts}
         />
       </PostsContainer>
     );

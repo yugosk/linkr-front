@@ -146,6 +146,7 @@ export default function TimelinePage() {
               token={token}
               newPosts={newPostList}
               setPostList={setPostList}
+              getPosts={getPosts}
             />
           </div>
           <TrendingBox posts={postList} />

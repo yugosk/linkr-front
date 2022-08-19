@@ -241,6 +241,7 @@ const StyledLikes = styled.div`
     height: 26px;
     width: 26px;
     margin-bottom: 4px;
+    cursor: pointer;
   }
 
   p {

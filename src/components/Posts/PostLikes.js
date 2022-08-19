@@ -46,7 +46,6 @@ export default function PostLikes({ isLiked, likes, postId, userId, token }) {
     setDisabled(true);
     if (liked) {
       try {
-        console.log(configs);
         await axios.delete(
           `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}`,
           configs
@@ -61,7 +60,6 @@ export default function PostLikes({ isLiked, likes, postId, userId, token }) {
       }
     } else {
       try {
-        console.log(configs);
         await axios.post(
           `${process.env.REACT_APP_API_BASE_URL}/likes/${postId}`,
           {},

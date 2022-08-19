@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
 import PageContainer from "../components/Timeline/PageContainer";
 import UserContext from "../contexts/userContext";
 import PostList from "../components/Timeline/TimelinePosts";
-import TrendingBox from "../components/Trending/TrendingBox"
+import TrendingBox from "../components/Trending/TrendingBox";
 
 export default function TimelinePage() {
-  const {hashtag} = useParams();
+  const { hashtag } = useParams();
   const { getSession } = useContext(UserContext);
-  const { token, picture, userId } = getSession();
+  const { token, userId } = getSession();
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState([]);
 
@@ -39,9 +39,20 @@ export default function TimelinePage() {
         <TimelineTitle>
           <h1># {hashtag}</h1>
         </TimelineTitle>
-        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
+
+        <div>
+          <div>
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+              newPosts={[]}
+            />
+          </div>
+          <TrendingBox />
+        </div>
       </TimelineContainer>
-      <TrendingBox />
     </PageContainer>
   );
 }

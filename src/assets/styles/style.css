@@ -12,3 +12,11 @@
 body {
   background-color: #333333;
 }
+
+.infinite-scroll-component {
+  -ms-overflow-style: none;
+}
+
+.infinite-scroll-component::-webkit-scrollbar {
+  display: none;
+}

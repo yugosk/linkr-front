@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import TimelineContainer from "../components/Timeline/TimelineContainer";
@@ -8,15 +8,16 @@ import PageContainer from "../components/Timeline/PageContainer";
 import UserContext from "../contexts/userContext";
 import PostList from "../components/Timeline/TimelinePosts";
 import TrendingBox from "../components/Trending/TrendingBox";
+import FollowContainer from "../components/Follow";
 
 export default function UserPage() {
-    const { id } = useParams();
-    const { getSession } = useContext(UserContext);
-    const { token, picture, userId } = getSession();
-    const [loading, setLoading] = useState(true);
-    const [postList, setPostList] = useState([]);
-    const [username,setUsername] = useState("");
-    const [userPicture,setUserPicture] = useState("");
+  const { id } = useParams();
+  const { getSession } = useContext(UserContext);
+  const { token, userId } = getSession();
+  const [loading, setLoading] = useState(true);
+  const [postList, setPostList] = useState([]);
+  const [username, setUsername] = useState("");
+  const [userPicture, setUserPicture] = useState("");
 
   async function getPosts() {
     const configs = {
@@ -47,12 +48,23 @@ export default function UserPage() {
     <PageContainer>
       <TimelineContainer>
         <TimelineTitle>
-            <img src={userPicture} alt='user picture'/>
-            <h1>{username}</h1>
+          <img src={userPicture} alt="user profile" />
+          <h1>{username}</h1>
+          <FollowContainer followedId={id} userId={userId} />
         </TimelineTitle>
-        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
+        <div>
+          <div>
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+              newPosts={[]}
+            />
+          </div>
+          <TrendingBox />
+        </div>
       </TimelineContainer>
-      <TrendingBox />
     </PageContainer>
   );
 }

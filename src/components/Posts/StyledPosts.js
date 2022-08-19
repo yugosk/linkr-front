@@ -1,6 +1,16 @@
 import styled from "styled-components";
 
-export const Post = styled.div`
+const PostsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  width: 100%;
+  max-width: 611px;
+`;
+
+const Post = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   background-color: #171717;
   flex-direction: row;
@@ -8,20 +18,18 @@ export const Post = styled.div`
   min-height: 276px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  margin-bottom: 30px;
   box-sizing: content-box;
   padding-bottom: 20px;
-
   @media (max-width: 612px) {
     width: 100%;
     height: 232px;
     border-radius: 0;
     padding: 0 0 8px 0;
-    margion-bottom: 16px;
+    /* margin-bottom: 16px; */
   }
 `;
 
-export const PostLeft = styled.div`
+const PostLeft = styled.div`
   width: 14%;
   height: 100%;
   display: flex;
@@ -35,22 +43,24 @@ export const PostLeft = styled.div`
     object-fit: cover;
     border-radius: 50%;
     display: block;
+    margin-bottom: 19px;
   }
 
   @media (max-width: 612px) {
   }
 `;
 
-export const PostContent = styled.div`
+const PostContent = styled.div`
   width: 86%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   margin-top: 17px;
-  position:relative;
+  position: relative;
   //border: 5px solid blue;
-  h1,a {
+  h1,
+  a {
     font-family: "Lato";
     font-weight: 400;
     font-size: 19px;
@@ -59,10 +69,10 @@ export const PostContent = styled.div`
     line-height: 23px;
     margin-bottom: 7px;
   }
-  a:hover{
-    cursor:pointer;
-    text-decoration:underline;
-}
+  a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 
   p {
     font-family: "Lato";
@@ -75,23 +85,22 @@ export const PostContent = styled.div`
     padding-right: 22px;
     min-height: 52px;
   }
-  .icons{
+  .icons {
     //background-color:blue;
-    position:absolute;
-    top:0px;
-    right:24px;
-    
+    position: absolute;
+    top: 0px;
+    right: 24px;
   }
   svg {
-    color:#ac0000;
+    color: #ac0000;
     height: 24px;
     width: 24px;
-    margin-left:14px;
-    :hover{
-      cursor:pointer;
+    margin-left: 14px;
+    :hover {
+      cursor: pointer;
     }
   }
-  .mymodal{
+  .mymodal {
     width: 597px;
     height: 262px;
     left: 413px;
@@ -111,42 +120,6 @@ export const PostContent = styled.div`
     padding: 20px;
   }
 
-  .mymodal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  
-    border: 1px solid #ccc;
-    background: #fff;
-    overflow: auto;
-    border-radius: 4px;
-    outline: none;
-    padding: 20px;
-  }
-  
-  .myoverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-
-.ReactModal__Overlay {
-  opacity: 0;
-  transition: opacity 500ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-}
-
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-}
-
   @media (max-width: 612px) {
     padding: 10px 15px 0 15px;
     width: 97%;
@@ -161,7 +134,7 @@ export const PostContent = styled.div`
   }
 `;
 
-export const PostSnippet = styled.div`
+const PostSnippet = styled.div`
   display: flex;
   flex-direction: row;
   width: 503px;
@@ -178,7 +151,7 @@ export const PostSnippet = styled.div`
   }
 `;
 
-export const SnippetText = styled.div`
+const SnippetText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -233,10 +206,9 @@ export const SnippetText = styled.div`
   }
 `;
 
-export const SnippetImage = styled.div`
+const SnippetImage = styled.div`
   display: flex;
   width: 30%;
-  height: 100%;
   align-items: center;
   justify-content: center;
 
@@ -248,7 +220,7 @@ export const SnippetImage = styled.div`
   }
 `;
 
-export const NoPosts = styled.p`
+const NoPosts = styled.p`
   text-align: center;
   font-family: "Lato";
   font-size: 28px;
@@ -256,12 +228,13 @@ export const NoPosts = styled.p`
   color: #ffffff;
 `;
 
-export const StyledLikes = styled.div`
+const StyledLikes = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   height: 35px;
+  margin-bottom: 17px;
 
   svg {
     color: ${(props) => (props.liked ? "#ac0000" : "#ffffff")};
@@ -292,59 +265,75 @@ export const StyledLikes = styled.div`
   }
 `;
 
-export const ModalStyle = styled.div`
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-width: 597px;
-height: 262px;
-background: #333333;
-border-radius: 50px;
-p{
-  width:350px;
-  margin-bottom:40px;
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 34px;
-  line-height: 41px;
-  text-align: center;
-  color: #FFFFFF;
-}
-button{
-  width: 134px;
-  height: 37px;
-  margin-right:10px; 
-  border:none;
-  border-radius: 5px;
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 22px; 
-  :hover{
-    cursor:pointer;
+const StyledNewPost = styled.div`
+  display: flex;
+  background-color: #1877f2;
+  flex-direction: row;
+  width: 611px;
+  height: 61px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  margin-bottom: 17px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 21px 0 21px 0;
+  cursor: pointer;
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    color: #ffffff;
+    margin-right: 14px;
   }
-}
-.cancel{
-  background-color:#ffffff;
-  color: #1877F2;
-}
-.proceed{
-  color:#ffffff;
-  background-color: #1877F2;
-}
+
+  svg {
+    color: #ffffff;
+    width: 22px;
+    height: 16px;
+  }
+
+  @media (max-width: 612px) {
+    width: 100%;
+    border-radius: 0;
+    padding: 0 0 8px 0;
+    margin-bottom: 16px;
+  }
 `;
 
-export const OverlayStyle = styled.div`
-display:flex;
-justify-content:center;
-align-items:center;
-background: rgba(255, 255, 255, 0.9);
-position: absolute;
-width: 100%;
-height: 100%;
-left: 0px;
-top: 0px;
+const CommentIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    height: 26px;
+    width: 26px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+    font-size: 11px;
+    text-align: center;
+    color: #ffffff;
+  }
 `;
+
+export {
+  PostsContainer,
+  Post,
+  PostLeft,
+  PostContent,
+  PostSnippet,
+  SnippetText,
+  SnippetImage,
+  NoPosts,
+  StyledLikes,
+  StyledNewPost,
+  CommentIcon,
+};

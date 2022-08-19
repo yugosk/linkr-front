@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
-  align-items:center;
-  width: 611px;
+  align-items: center;
+  width: 100%;
   text-align: left;
   height: 64px;
   margin-top: 121px;
@@ -16,11 +16,12 @@ export default styled.div`
     line-height: 64px;
     color: #ffffff;
   }
-  img{
+  img {
     width: 50px;
     height: 50px;
-    border-radius:50%;
-    margin-right:18px;
+    border-radius: 50%;
+    margin-right: 18px;
+    object-fit: cover;
   }
 
   @media (max-width: 612px) {
@@ -29,7 +30,7 @@ export default styled.div`
     height: 87px;
     margin-top: 140px;
     margin-bottom: 0;
-    padding-left: 17px;
+    padding: 17px;
 
     h1 {
       font-weight: 700;

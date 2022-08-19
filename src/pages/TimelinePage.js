@@ -12,6 +12,7 @@ import {
 } from "../components/Timeline/TimelineForm";
 import PostList from "../components/Timeline/TimelinePosts";
 import TrendingBox from "../components/Trending/TrendingBox";
+import useInterval from "use-interval";
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
@@ -22,8 +23,32 @@ export default function TimelinePage() {
   const [publishButton, setPublishButton] = useState("Publish");
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState([]);
+  const [newPostList, setNewPostList] = useState([]);
+  const [count, setCount] = useState(0);
 
   async function getPosts() {
+    const configs = {
+      headers: { Authorization: token },
+    };
+    console.log(token);
+    try {
+      const promise = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/posts`,
+        configs
+      );
+      if (promise.data === "This user follows no one") {
+        setPostList("No follows");
+      } else {
+        setPostList(promise.data);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getNewPosts() {
     const configs = {
       headers: { Authorization: token },
     };
@@ -32,14 +57,15 @@ export default function TimelinePage() {
         `${process.env.REACT_APP_API_BASE_URL}/posts`,
         configs
       );
-      setPostList(promise.data);
-      setLoading(false);
+      setNewPostList(promise.data);
+      setCount(count + 1);
     } catch (err) {
       console.log(err);
     }
   }
 
   useEffect(() => getPosts(), []);
+  useInterval(getNewPosts, 15000);
 
   async function submitPost(e) {
     e.preventDefault();
@@ -82,39 +108,51 @@ export default function TimelinePage() {
         <TimelineTitle>
           <h1>timeline</h1>
         </TimelineTitle>
-        <FormContainer>
-          <FormImage>
-            <img src={picture} alt="Profile" />
-          </FormImage>
-          <FormContent>
-            <h1>What are you going to share today?</h1>
-            <PublishForm onSubmit={submitPost}>
-              <input
-                type={"text"}
-                id="url"
-                value={url}
-                placeholder="http://..."
-                required
-                disabled={publishLoading}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-              <input
-                type={"text"}
-                id="description"
-                value={description}
-                placeholder="Awesome article about #javascript"
-                disabled={publishLoading}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <button type="submit" disabled={publishLoading}>
-                {publishButton}
-              </button>
-            </PublishForm>
-          </FormContent>
-        </FormContainer>
-        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
+        <div>
+          <div>
+            <FormContainer>
+              <FormImage>
+                <img src={picture} alt="Profile" />
+              </FormImage>
+              <FormContent>
+                <h1>What are you going to share today?</h1>
+                <PublishForm onSubmit={submitPost}>
+                  <input
+                    type={"text"}
+                    id="url"
+                    value={url}
+                    placeholder="http://..."
+                    required
+                    disabled={publishLoading}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                  <input
+                    type={"text"}
+                    id="description"
+                    value={description}
+                    placeholder="Awesome article about #javascript"
+                    disabled={publishLoading}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <button type="submit" disabled={publishLoading}>
+                    {publishButton}
+                  </button>
+                </PublishForm>
+              </FormContent>
+            </FormContainer>
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+              newPosts={newPostList}
+              setPostList={setPostList}
+              getPosts={getPosts}
+            />
+          </div>
+          <TrendingBox posts={postList} />
+        </div>
       </TimelineContainer>
-      <TrendingBox />
     </PageContainer>
   );
 }

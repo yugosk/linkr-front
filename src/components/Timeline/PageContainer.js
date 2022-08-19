@@ -2,10 +2,8 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
+  flex-direction: column;
   background-color: #333333;
-  //align-items:center;
-  justify-content: center;
-  flex-direction: row;
+  align-items: center;
   padding: 0;
-  overflow: scroll;
 `;

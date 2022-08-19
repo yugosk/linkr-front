@@ -370,6 +370,7 @@ button{
 `;
 
 const OverlayStyle = styled.div`
+z-index: 2;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -379,6 +380,8 @@ width: 100%;
 height: 100%;
 left: 0px;
 top: 0px;
+bottom:0;
+right:0;
 `;
 
 export {

@@ -37,7 +37,7 @@ export default function TimelinePage() {
     <PageContainer>
       <TimelineContainer>
         <TimelineTitle>
-          <h1>{hashtag}</h1>
+          <h1># {hashtag}</h1>
         </TimelineTitle>
 
         <div>

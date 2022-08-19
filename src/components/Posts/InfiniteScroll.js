@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { AiTwotoneDelete, AiOutlineComment } from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
 import axios from "axios";
+import ReactModal from "react-modal";
 import {
   Post,
   PostLeft,
@@ -75,7 +76,7 @@ function SinglePost({
       }
 
   }
-
+  userId = parseInt(userId);
   const link = "/user/" + postOwner;
 
   if (metaImage === "Metadata not available" || metaImage === "") {
@@ -118,12 +119,16 @@ function SinglePost({
             contentLabel="My dialog"
             closeTimeoutMS={500}
             contentElement={() => <ModalStyle>
-              <div>My modal dialog.</div>
-            <button onClick={toggleModal}>Close modal</button>
-            </ModalStyle>}
-            overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
-            >
-            </ReactModal>
+              <p>Are you sure you want to delete this post?</p>
+              <div>
+                <button className="cancel" onClick={toggleModal}>No, go back</button>
+                <button className="proceed" onClick={()=>deleting(postId)}>Yes, delete it</button>
+              </div>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+          >
+          
+          </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>
@@ -195,12 +200,15 @@ function SinglePost({
             contentLabel="My dialog"
             closeTimeoutMS={500}
             contentElement={() => <ModalStyle>
-              <div>My modal dialog.</div>
-            <button onClick={toggleModal}>Close modal</button>
-            </ModalStyle>}
-            overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
-            >    
-            </ReactModal>
+              <p>Are you sure you want to delete this post?</p>
+              <div>
+                <button className="cancel" onClick={toggleModal}>No, go back</button>
+                <button className="proceed" onClick={()=>deleting(postId)}>Yes, delete it</button>
+              </div>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+          >
+          </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>

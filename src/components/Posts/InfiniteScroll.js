@@ -226,7 +226,6 @@ export default function InfinitePosts({ posts, userId, token }) {
 
   async function getMorePosts() {
     const requestRoute = getMorePostsParams();
-    console.log("requestRoute: " + requestRoute);
     const configs = {
       headers: { Authorization: token },
     };

@@ -324,6 +324,63 @@ const CommentIcon = styled.div`
   }
 `;
 
+const ModalStyle = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+width: 597px;
+height: 262px;
+background: #333333;
+border-radius: 50px;
+p{
+  width:350px;
+  margin-bottom:40px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 41px;
+  text-align: center;
+  color: #FFFFFF;
+}
+button{
+  width: 134px;
+  height: 37px;
+  margin-right:10px; 
+  border:none;
+  border-radius: 5px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px; 
+  :hover{
+    cursor:pointer;
+  }
+}
+.cancel{
+  background-color:#ffffff;
+  color: #1877F2;
+}
+.proceed{
+  color:#ffffff;
+  background-color: #1877F2;
+}
+`;
+
+const OverlayStyle = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+background: rgba(255, 255, 255, 0.9);
+position: absolute;
+width: 100%;
+height: 100%;
+left: 0px;
+top: 0px;
+`;
+
 export {
   PostsContainer,
   Post,
@@ -336,4 +393,6 @@ export {
   StyledLikes,
   StyledNewPost,
   CommentIcon,
+  ModalStyle,
+  OverlayStyle,
 };

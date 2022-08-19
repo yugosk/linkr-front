@@ -16,6 +16,8 @@ import {
   SnippetText,
   SnippetImage,
   CommentIcon,
+  ModalStyle,
+  OverlayStyle,
 } from "../Posts/StyledPosts";
 import PostLikes from "../Posts/PostLikes";
 import CommentsContainer from "../Comments/Container";
@@ -47,23 +49,31 @@ function SinglePost({
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
   const [commentsCount, setCommentsCount] = useState(comments);
 
-  async function deleting(postId) {
+  ReactModal.setAppElement(document.querySelector(".root"));
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleModal() {
+    setIsOpen(()=>!isOpen);
+
+  }
+
+  async function deleting(postId){
     const configs = {
-      headers: { Authorization: `${token}` },
+      headers: { Authorization: token },
     };
-    //console.log(token);
-    if (window.confirm("Deletar post?")) {
-      try {
+    console.log(token);
+      try{
         await axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
-          configs
+        `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+        configs
         );
-        alert("post deletado");
-      } catch (error) {
+        alert('post deletado');
+      } catch(error) {
         console.log(error);
         alert("There was an error deleting the post, try again");
       }
-    }
+
   }
 
   const link = "/user/" + postOwner;
@@ -94,12 +104,26 @@ function SinglePost({
                 <BsPencilFill color="white" />
                 <AiTwotoneDelete
                   color="white"
-                  onClick={() => deleting(postId)}
+                  onClick={() => toggleModal()}
                 />
               </div>
             ) : (
               ""
             )}
+            <ReactModal
+            isOpen={isOpen}
+            onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
+            contentLabel="My dialog"
+            closeTimeoutMS={500}
+            contentElement={() => <ModalStyle>
+              <div>My modal dialog.</div>
+            <button onClick={toggleModal}>Close modal</button>
+            </ModalStyle>}
+            overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+            >
+            </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>
@@ -157,12 +181,26 @@ function SinglePost({
                 <BsPencilFill color="white" />
                 <AiTwotoneDelete
                   color="white"
-                  onClick={() => deleting(postId)}
+                  onClick={() => toggleModal()}
                 />
               </div>
             ) : (
               ""
             )}
+            <ReactModal
+            isOpen={isOpen}
+            onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
+            contentLabel="My dialog"
+            closeTimeoutMS={500}
+            contentElement={() => <ModalStyle>
+              <div>My modal dialog.</div>
+            <button onClick={toggleModal}>Close modal</button>
+            </ModalStyle>}
+            overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+            >    
+            </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>

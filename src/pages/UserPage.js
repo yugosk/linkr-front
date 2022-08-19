@@ -7,7 +7,7 @@ import TimelineTitle from "../components/Timeline/TimelineTitle";
 import PageContainer from "../components/Timeline/PageContainer";
 import UserContext from "../contexts/userContext";
 import PostList from "../components/Timeline/TimelinePosts";
-import TrendingBox from "../components/Trending/TrendingBox"
+import TrendingBox from "../components/Trending/TrendingBox";
 
 export default function UserPage() {
     const { id } = useParams();
@@ -30,6 +30,9 @@ export default function UserPage() {
       if (promise.data[0].url){
         setPostList(promise.data);
       }
+      else {
+        setPostList([]);
+      }
       setLoading(false);
       setUsername(promise.data[0].username);
       setUserPicture(promise.data[0].picture);
@@ -38,7 +41,7 @@ export default function UserPage() {
     }
   }
 
-  useEffect(() => getPosts(), []);
+  useEffect(() => getPosts(), [id]);
 
   return (
     <PageContainer>
@@ -47,7 +50,7 @@ export default function UserPage() {
             <img src={userPicture} alt='user picture'/>
             <h1>{username}</h1>
         </TimelineTitle>
-        <PostList loading={loading} posts={postList} userId={userId}/>
+        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
       </TimelineContainer>
       <TrendingBox />
     </PageContainer>

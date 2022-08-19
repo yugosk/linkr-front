@@ -15,7 +15,8 @@
     "react-scripts": "^4.0.3",
     "react-tagify": "^0.1.4",
     "react-tooltip": "^4.2.21",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "styled-react-modal": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

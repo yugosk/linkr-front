@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import React, { useState } from "react";
-import Modal from "react-modal";
+import ReactModal from "react-modal";
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MdBrokenImage } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
@@ -12,6 +12,66 @@ import ReactTooltip from "react-tooltip";
 import axios from "axios";
 import {  Post, PostContent, PostLeft, PostSnippet, SnippetText, SnippetImage,
 NoPosts, StyledLikes} from "./PostStyles.js"
+
+const ModalStyle = styled.div`
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+width: 597px;
+height: 262px;
+
+background: #333333;
+border-radius: 50px;
+p{
+  width:350px;
+  margin-bottom:40px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 41px;
+  text-align: center;
+  color: #FFFFFF;
+}
+button{
+  width: 134px;
+  height: 37px;
+  margin-right:10px; 
+  border:none;
+  border-radius: 5px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px; 
+  :hover{
+    cursor:pointer;
+  }
+}
+.cancel{
+  background-color:#ffffff;
+  color: #1877F2;
+}
+.proceed{
+  color:#ffffff;
+  background-color: #1877F2;
+}
+`;
+
+const OverlayStyle = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+background: rgba(255, 255, 255, 0.9);
+
+position: absolute;
+width: 100%;
+height: 100%;
+left: 0px;
+top: 0px;
+`;
 
 
 function defineTooltip(likes, isLiked, count, userId) {
@@ -130,20 +190,20 @@ function SinglePost({
 
   const navigate = useNavigate();
 
-  Modal.setAppElement(document.querySelector(".root"));
+  ReactModal.setAppElement(document.querySelector(".root"));
 
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleModal() {
-    setIsOpen(!isOpen);
+    setIsOpen(()=>!isOpen);
+
   }
 
   async function deleting(postId){
-  /*const configs = {
-      headers: { Authorization: `${token}` },
+    const configs = {
+      headers: { Authorization: token },
     };
-    //console.log(token);
-    if (window.confirm("Deletar post?")) {
+    console.log(token);
       try{
         await axios.delete(
         `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
@@ -154,7 +214,6 @@ function SinglePost({
         console.log(error);
         alert("There was an error deleting the post, try again");
       }
-    }*/
 
   }
 
@@ -162,7 +221,6 @@ function SinglePost({
   async function editing(){
     setEditingPost(!editingPost);
   }
-
 
 
   const link = '/user/' + postOwner;
@@ -187,17 +245,22 @@ function SinglePost({
           <AiTwotoneDelete color="white" onClick={() => toggleModal()}/>
         </div>
           : ""} 
-          <Modal
+          <ReactModal
             isOpen={isOpen}
             onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
             contentLabel="My dialog"
-            className="mymodal"
-            overlayClassName="myoverlay"
             closeTimeoutMS={500}
-          >
-          <div>My modal dialog.</div>
+            contentElement={() => <ModalStyle>
+              <div>My modal dialog.</div>
           <button onClick={toggleModal}>Close modal</button>
-          </Modal>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+          >
+            
+          
+          </ReactModal>
           <Link key={postId} to={link} >{username}</Link>
           <ReactTagify
             tagStyle={tagStyle}
@@ -242,23 +305,40 @@ function SinglePost({
           <AiTwotoneDelete color="white" onClick={() => toggleModal()}/>
         </div>
          : ""}
-         <Modal
+         <ReactModal
             isOpen={isOpen}
             onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
             contentLabel="My dialog"
-            className="mymodal"
-            overlayClassName="myoverlay"
             closeTimeoutMS={500}
+            contentElement={() => <ModalStyle>
+              <p>Are you sure you want to delete this post?</p>
+              <div>
+                <button className="cancel" onClick={toggleModal}>No, go back</button>
+                <button className="proceed" onClick={()=>deleting(postId)}>Yes, delete it</button>
+              </div>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
           >
-          <div>My modal dialog.</div>
-          <button onClick={toggleModal}>Close modal</button>
-        </Modal>
+          
+          </ReactModal>
           <Link key={postId} to={link} >{username}</Link>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
           >
           <p>{description}</p>
+          <form>
+          <input
+            type="text"
+            id="first"
+            name="first"
+            autoComplete="off"
+          />
+          <button type="submit">Submit</button>
+        </form>
+          
           </ReactTagify>
           <PostSnippet>
             <SnippetText>

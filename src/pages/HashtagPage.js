@@ -31,7 +31,7 @@ export default function TimelinePage() {
     }
   }
 
-  useEffect(() => getPosts(), []);
+  useEffect(() => getPosts(), [hashtag]);
 
   return (
     <PageContainer>
@@ -39,7 +39,7 @@ export default function TimelinePage() {
         <TimelineTitle>
           <h1># {hashtag}</h1>
         </TimelineTitle>
-        <PostList loading={loading} posts={postList} userId={userId}/>
+        <PostList loading={loading} posts={postList} userId={userId} token={token}/>
       </TimelineContainer>
       <TrendingBox />
     </PageContainer>

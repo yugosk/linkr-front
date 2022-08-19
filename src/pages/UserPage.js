@@ -49,7 +49,13 @@ export default function UserPage() {
         </TimelineTitle>
         <div>
           <div>
-            <PostList loading={loading} posts={postList} />
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+              newPosts={[]}
+            />
           </div>
           <TrendingBox />
         </div>

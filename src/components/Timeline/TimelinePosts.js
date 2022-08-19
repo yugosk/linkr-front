@@ -12,7 +12,9 @@ import {
   AiTwotoneDelete,
   AiOutlineComment,
 } from "react-icons/ai";
+
 import { BsPencilFill } from "react-icons/bs";
+import { HiRefresh } from "react-icons/hi";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 
@@ -44,7 +46,7 @@ const Post = styled.div`
     height: 232px;
     border-radius: 0;
     padding: 0 0 8px 0;
-    /* margin-bottom: 16px; */
+    margin-bottom: 16px;
   }
 `;
 
@@ -303,6 +305,44 @@ const CommentIcon = styled.div`
     color: #ffffff;
   }
 `;
+const StyledNewPost = styled.div`
+  display: flex;
+  background-color: #1877f2;
+  flex-direction: row;
+  width: 611px;
+  height: 61px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  margin-bottom: 17px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 21px 0 21px 0;
+  cursor: pointer;
+
+  p {
+    font-family: "Lato";
+    font-weight: 400;
+
+    font-size: 16px;
+    text-align: center;
+    color: #ffffff;
+    margin-right: 14px;
+  }
+
+  svg {
+    color: #ffffff;
+    width: 22px;
+    height: 16px;
+  }
+
+  @media (max-width: 612px) {
+    width: 100%;
+    border-radius: 0;
+    padding: 0 0 8px 0;
+    margin-bottom: 16px;
+  }
+`;
 
 function defineTooltip(likes, isLiked, count, userId) {
   const newLikes = likes.filter((i) => i.userId !== userId);
@@ -443,10 +483,6 @@ function SinglePost({
     }
   }
 
-  if (description === null) {
-    description = "essa descricao eh null";
-  }
-
   const link = "/user/" + postOwner;
 
   if (metaImage === "Metadata not available" || metaImage === "") {
@@ -579,33 +615,73 @@ function SinglePost({
 }
 
 function MapPosts({ posts, userId, token }) {
-  if (posts.length === 0) {
-    return <NoPosts>There are no posts yet</NoPosts>;
+  if (posts === "No follows") {
+    return (
+      <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+    );
   } else {
-    return posts.map((post, index) => {
-      return (
-        <SinglePost
-          key={index}
-          picture={post.picture}
-          username={post.username}
-          description={post.description}
-          url={post.url}
-          postOwner={post.postOwner}
-          metaTitle={post.metaTitle}
-          metaImage={post.metaImage}
-          metaDescription={post.metaDescription}
-          likes={post.likes}
-          userId={userId}
-          token={token}
-          postId={post.id}
-          isLiked={post.isLiked}
-        />
-      );
-    });
+    if (posts.length === 0) {
+      if (window.location.pathname === "/timeline") {
+        return <NoPosts>No posts found from your friends</NoPosts>;
+      } else if (window.location.pathname.slice(1, 5) === "user") {
+        return <NoPosts>This user has not posted anything yet</NoPosts>;
+      } else {
+        return <NoPosts>This hashtag has not been used yet</NoPosts>;
+      }
+    } else {
+      return posts.map((post, index) => {
+        return (
+          <SinglePost
+            key={index}
+            picture={post.picture}
+            username={post.username}
+            description={post.description}
+            url={post.url}
+            postOwner={post.postOwner}
+            metaTitle={post.metaTitle}
+            metaImage={post.metaImage}
+            metaDescription={post.metaDescription}
+            likes={post.likes}
+            userId={userId}
+            token={token}
+            postId={post.id}
+            isLiked={post.isLiked}
+          />
+        );
+      });
+    }
   }
 }
 
-export default function PostList({ loading, posts, userId, token }) {
+function NewPosts({ postList, newPostList, userId, token, setPostList }) {
+  if (newPostList.length === 0) {
+    return <MapPosts posts={postList} userId={userId} token={token} />;
+  } else {
+    if (postList[0].id === newPostList[0].id) {
+      return <MapPosts posts={postList} userId={userId} token={token} />;
+    } else {
+      return (
+        <>
+          <StyledNewPost onClick={() => setPostList(newPostList)}>
+            <p>x new posts, load more!</p>
+            <HiRefresh />
+          </StyledNewPost>
+          <MapPosts posts={postList} userId={userId} token={token} />
+        </>
+      );
+    }
+  }
+}
+
+export default function PostList({
+  loading,
+  posts,
+  userId,
+  token,
+  newPosts,
+  count,
+  setPostList,
+}) {
   if (loading) {
     return (
       <Oval height={80} width={80} color="#1877F2" secondaryColor="#0CF0F9" />
@@ -613,7 +689,14 @@ export default function PostList({ loading, posts, userId, token }) {
   } else {
     return (
       <PostsContainer>
-        <MapPosts posts={posts} userId={userId} token={token} />
+        <NewPosts
+          postList={posts}
+          newPostList={newPosts}
+          userId={userId}
+          token={token}
+          count={count}
+          setPostList={setPostList}
+        />
       </PostsContainer>
     );
   }

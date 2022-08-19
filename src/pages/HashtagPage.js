@@ -39,9 +39,16 @@ export default function TimelinePage() {
         <TimelineTitle>
           <h1>{hashtag}</h1>
         </TimelineTitle>
+
         <div>
           <div>
-            <PostList loading={loading} posts={postList} userId={userId} />
+            <PostList
+              loading={loading}
+              posts={postList}
+              userId={userId}
+              token={token}
+              newPosts={[]}
+            />
           </div>
           <TrendingBox />
         </div>

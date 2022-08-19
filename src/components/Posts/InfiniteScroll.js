@@ -197,6 +197,16 @@ function SinglePost({
   }
 }
 
+function getMorePostsParams() {
+  if (window.location.pathname === "/timeline") {
+    return "posts";
+  } else if (window.location.pathname.slice(0, 8) === "hashtag") {
+    return "hashtag";
+  } else {
+    return window.location.pathname.slice(1);
+  }
+}
+
 export default function InfinitePosts({ posts, userId, token }) {
   const [postList, setPostList] = useState(posts);
   const [counter, setCounter] = useState(10);
@@ -215,12 +225,14 @@ export default function InfinitePosts({ posts, userId, token }) {
   };
 
   async function getMorePosts() {
+    const requestRoute = getMorePostsParams();
+    console.log("requestRoute: " + requestRoute);
     const configs = {
       headers: { Authorization: token },
     };
     try {
       const promise = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/posts?offset=${counter}`,
+        `${process.env.REACT_APP_API_BASE_URL}/${requestRoute}?offset=${counter}`,
         configs
       );
       if (promise.data.length < 10) {

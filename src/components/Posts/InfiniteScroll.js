@@ -7,6 +7,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { AiTwotoneDelete, AiOutlineComment } from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
+import { BiRepost } from "react-icons/bi";
 import axios from "axios";
 import {
   Post,
@@ -16,25 +17,30 @@ import {
   SnippetText,
   SnippetImage,
   CommentIcon,
+  RepostContainer,
+  RepostSpan,
 } from "../Posts/StyledPosts";
 import PostLikes from "../Posts/PostLikes";
 import CommentsContainer from "../Comments/Container";
+import Repost from "./Reposts";
 
 function SinglePost({
-  postId,
   picture,
-  postOwner,
   username,
   description,
   url,
+  postOwner,
   metaTitle,
   metaImage,
   metaDescription,
   likes,
   userId,
   token,
+  postId,
   isLiked,
-  comments = 0,
+  comments,
+  reposts,
+  userReposted,
 }) {
   const tagStyle = {
     color: "#ffffff",
@@ -87,6 +93,12 @@ function SinglePost({
               />
               <p>{commentsCount} comments</p>
             </CommentIcon>
+            <Repost
+              userReposted={userReposted}
+              reposts={reposts}
+              postId={postId}
+              token={token}
+            />
           </PostLeft>
           <PostContent>
             {userId === postOwner ? (
@@ -150,6 +162,12 @@ function SinglePost({
               />
               <p>{commentsCount} comments</p>
             </CommentIcon>
+            <Repost
+              userReposted={userReposted}
+              reposts={reposts}
+              postId={postId}
+              token={token}
+            />
           </PostLeft>
           <PostContent>
             {userId == postOwner ? (
@@ -193,6 +211,85 @@ function SinglePost({
           />
         )}
       </div>
+    );
+  }
+}
+
+function IsRepost({
+  postId,
+  url,
+  description,
+  postOwner,
+  picture,
+  username,
+  isRepost,
+  repostOwner,
+  repostUsername,
+  reposts,
+  comments,
+  likes,
+  isLiked,
+  userReposted,
+  metaTitle,
+  metaImage,
+  metaDescription,
+  userId,
+  token,
+}) {
+  if (isRepost) {
+    return (
+      <RepostContainer>
+        <RepostSpan>
+          <BiRepost />
+          <p>
+            Re-posted by{" "}
+            {Number(repostOwner) === Number(userId) ? (
+              <em>you</em>
+            ) : (
+              <em>{repostUsername}</em>
+            )}
+          </p>
+        </RepostSpan>
+        <SinglePost
+          postId={postId}
+          url={url}
+          description={description}
+          postOwner={postOwner}
+          picture={picture}
+          username={username}
+          reposts={reposts}
+          comments={comments}
+          likes={likes}
+          isLiked={isLiked}
+          userReposted={userReposted}
+          metaTitle={metaTitle}
+          metaImage={metaImage}
+          metaDescription={metaDescription}
+          userId={userId}
+          token={token}
+        />
+      </RepostContainer>
+    );
+  } else {
+    return (
+      <SinglePost
+        postId={postId}
+        url={url}
+        description={description}
+        postOwner={postOwner}
+        picture={picture}
+        username={username}
+        reposts={reposts}
+        comments={comments}
+        likes={likes}
+        isLiked={isLiked}
+        userReposted={userReposted}
+        metaTitle={metaTitle}
+        metaImage={metaImage}
+        metaDescription={metaDescription}
+        userId={userId}
+        token={token}
+      />
     );
   }
 }
@@ -258,21 +355,27 @@ export default function InfinitePosts({ posts, userId, token }) {
     >
       {postList.map((post, index) => {
         return (
-          <SinglePost
+          <IsRepost
             key={index}
+            postId={post.id}
+            url={post.url}
+            description={post.description}
+            postOwner={post.postOwner}
             picture={post.picture}
             username={post.username}
-            description={post.description}
-            url={post.url}
-            postOwner={post.postOwner}
+            reposts={post.reposts}
+            comments={post.comments}
+            likes={post.likes}
+            isLiked={post.isLiked}
+            userReposted={post.userReposted}
             metaTitle={post.metaTitle}
             metaImage={post.metaImage}
             metaDescription={post.metaDescription}
-            likes={post.likes}
+            repostOwner={post.repostOwner}
+            repostUsername={post.repostUsername}
+            isRepost={post.isRepost}
             userId={userId}
             token={token}
-            postId={post.id}
-            isLiked={post.isLiked}
           />
         );
       })}

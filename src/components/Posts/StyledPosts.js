@@ -9,6 +9,8 @@ const PostsContainer = styled.div`
 `;
 
 const Post = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   background-color: #171717;
   flex-direction: row;
@@ -16,16 +18,14 @@ const Post = styled.div`
   min-height: 276px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  margin-bottom: 30px;
   box-sizing: content-box;
   padding-bottom: 20px;
-
   @media (max-width: 612px) {
     width: 100%;
     height: 232px;
     border-radius: 0;
     padding: 0 0 8px 0;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
   }
 `;
 
@@ -43,6 +43,7 @@ const PostLeft = styled.div`
     object-fit: cover;
     border-radius: 50%;
     display: block;
+    margin-bottom: 19px;
   }
 
   @media (max-width: 612px) {
@@ -208,7 +209,6 @@ const SnippetText = styled.div`
 const SnippetImage = styled.div`
   display: flex;
   width: 30%;
-  height: 100%;
   align-items: center;
   justify-content: center;
 
@@ -234,6 +234,7 @@ const StyledLikes = styled.div`
   align-items: center;
   justify-content: flex-start;
   height: 35px;
+  margin-bottom: 17px;
 
   svg {
     color: ${(props) => (props.liked ? "#ac0000" : "#ffffff")};

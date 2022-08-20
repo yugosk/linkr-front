@@ -4,6 +4,7 @@ import TimelineContainer from "../components/Timeline/TimelineContainer";
 import TimelineTitle from "../components/Timeline/TimelineTitle";
 import PageContainer from "../components/Timeline/PageContainer";
 import UserContext from "../contexts/userContext";
+import RepostsContext from "../contexts/repostsContext";
 import {
   FormContainer,
   FormImage,
@@ -13,6 +14,7 @@ import {
 import PostList from "../components/Timeline/TimelinePosts";
 import TrendingBox from "../components/Trending/TrendingBox";
 import useInterval from "use-interval";
+import RepostModal from "../components/Posts/RepostModal";
 
 export default function TimelinePage() {
   const { getSession } = useContext(UserContext);
@@ -25,6 +27,7 @@ export default function TimelinePage() {
   const [postList, setPostList] = useState([]);
   const [newPostList, setNewPostList] = useState([]);
   const [count, setCount] = useState(0);
+  const { modal } = useContext(RepostsContext);
 
   async function getPosts() {
     const configs = {
@@ -103,6 +106,7 @@ export default function TimelinePage() {
   }
   return (
     <PageContainer>
+      <RepostModal modalOpen={modal} token={token} />
       <TimelineContainer>
         <TimelineTitle>
           <h1>timeline</h1>

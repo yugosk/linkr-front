@@ -9,6 +9,7 @@ import { AiTwotoneDelete, AiOutlineComment } from "react-icons/ai";
 import { BsPencilFill } from "react-icons/bs";
 import { BiRepost } from "react-icons/bi";
 import axios from "axios";
+import ReactModal from "react-modal";
 import {
   Post,
   PostLeft,
@@ -17,6 +18,8 @@ import {
   SnippetText,
   SnippetImage,
   CommentIcon,
+  ModalStyle,
+  OverlayStyle,
   RepostContainer,
   RepostSpan,
 } from "../Posts/StyledPosts";
@@ -53,25 +56,33 @@ function SinglePost({
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
   const [commentsCount, setCommentsCount] = useState(comments);
 
-  async function deleting(postId) {
+  ReactModal.setAppElement(document.querySelector(".root"));
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleModal() {
+    setIsOpen(()=>!isOpen);
+
+  }
+
+  async function deleting(postId){
     const configs = {
-      headers: { Authorization: `${token}` },
+      headers: { Authorization: token },
     };
-    //console.log(token);
-    if (window.confirm("Deletar post?")) {
-      try {
+    console.log(token);
+      try{
         await axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
-          configs
+        `${process.env.REACT_APP_API_BASE_URL}/deleting/${postId}`,
+        configs
         );
-        alert("post deletado");
-      } catch (error) {
+        alert('post deletado');
+      } catch(error) {
         console.log(error);
         alert("There was an error deleting the post, try again");
       }
-    }
-  }
 
+  }
+  userId = parseInt(userId);
   const link = "/user/" + postOwner;
 
   if (metaImage === "Metadata not available" || metaImage === "") {
@@ -106,12 +117,30 @@ function SinglePost({
                 <BsPencilFill color="white" />
                 <AiTwotoneDelete
                   color="white"
-                  onClick={() => deleting(postId)}
+                  onClick={() => toggleModal()}
                 />
               </div>
             ) : (
               ""
             )}
+            <ReactModal
+            isOpen={isOpen}
+            onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
+            contentLabel="My dialog"
+            closeTimeoutMS={500}
+            contentElement={() => <ModalStyle>
+              <p>Are you sure you want to delete this post?</p>
+              <div>
+                <button className="cancel" onClick={toggleModal}>No, go back</button>
+                <button className="proceed" onClick={()=>deleting(postId)}>Yes, delete it</button>
+              </div>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+          >
+          
+          </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>
@@ -175,12 +204,29 @@ function SinglePost({
                 <BsPencilFill color="white" />
                 <AiTwotoneDelete
                   color="white"
-                  onClick={() => deleting(postId)}
+                  onClick={() => toggleModal()}
                 />
               </div>
             ) : (
               ""
             )}
+            <ReactModal
+            isOpen={isOpen}
+            onRequestClose={toggleModal}
+            className="_"
+            overlayClassName="_"
+            contentLabel="My dialog"
+            closeTimeoutMS={500}
+            contentElement={() => <ModalStyle>
+              <p>Are you sure you want to delete this post?</p>
+              <div>
+                <button className="cancel" onClick={toggleModal}>No, go back</button>
+                <button className="proceed" onClick={()=>deleting(postId)}>Yes, delete it</button>
+              </div>
+          </ModalStyle>}
+          overlayElement={(props, contentElement) => <OverlayStyle {...props}>{contentElement}</OverlayStyle>}
+          >
+          </ReactModal>
             <Link key={postId} to={link}>
               {username}
             </Link>
